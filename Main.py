@@ -204,4 +204,28 @@ def datosJuego(id):
     print(f"Durecion: {videojuegos[id]["duracion_horas"]}")
 
 
+def iniciarSesion():
 
+    print("inicio de Sesion: ")
+    usuarioIngresado = input("ingrese su usuario: ")
+    contraseñaIngresada = input("ingrese su contraseña: ")
+    
+    usuarioActivo= 0 
+    coincidencia = False
+    indice = len(usuarios)
+
+    for i in range (indice):
+        if usuarioIngresado == usuarios[i]["user"]:
+            if contraseñaIngresada == usuarios[i]["password"]:
+                usuarioActivo = i
+                coincidencia = True
+    
+    if coincidencia == True:
+        print(f"bienvenido {usuarios[usuarioActivo]["user"]} ")
+
+    else:
+        print("alguno de los datos es incorrecto")
+        usuarioActivo = None
+    
+    return usuarioActivo
+    
