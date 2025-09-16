@@ -308,3 +308,12 @@ def comprarJuegos(usuarioActivo):
         else:
             print("saliendo...")
             flag=1
+
+def main():
+    crearUsuario()
+    usuarioActivo = iniciarSesion()
+    cargaSaldo(usuarioActivo)
+    comprarJuegos(usuarioActivo)    
+
+main()
+print(usuarios)
