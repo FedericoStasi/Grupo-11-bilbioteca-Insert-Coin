@@ -280,4 +280,31 @@ def iniciarSesion():
         usuarioActivo = None
     
     return usuarioActivo
-    
+    def comprarJuegos(usuarioActivo):
+    flag=0
+    while flag !=1:
+        juegoElegido=mostrarJuegos()
+        
+        confirmacion=int(input("ingrese 1 si quiere comprar ese juego, 2 si quiere volver a ver la lista de juegos, 3 si desea salir:"))
+        while confirmacion>3 or confirmacion<1:
+            print("seleccione una opcion valida")
+            confirmacion=int(input("ingrese 1 si quiere comprar ese juego, 2 si quiere volver a ver la lista de juegos:"))
+        if confirmacion==1:
+            print("aguarde un momento, chequeando su saldo :)")
+            if usuarios[usuarioActivo]["saldo"]>= videojuegos[juegoElegido]["precio"]:
+                print("felicitaciones, compraste un juego")
+                usuarios[usuarioActivo]["juegos"].append(videojuegos[juegoElegido])
+                usuarios[usuarioActivo]["saldo"]-= videojuegos[juegoElegido]["precio"]
+                flag=1
+        
+            else:
+                print("aguarde un momento, chequeando su saldo :)")
+                print("lo sentimos, su saldo no es suficiente para comprar el juego :(")
+        
+        elif confirmacion==2:
+            print("volviendo a la lista de juegos...")
+        
+        else:
+            print("saliendo...")
+            flag=1
+
