@@ -1,4 +1,5 @@
 import random
+import re
 usuarios =[
 
 ]
@@ -203,7 +204,58 @@ def datosJuego(id):
     print(f"Trofeos Totales: {videojuegos[id]["trofeos_totales"]}")
     print(f"Durecion: {videojuegos[id]["duracion_horas"]}")
 
+def cargaSaldo (usuarioActivo):
+    patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$')
 
+    
+    flag = True
+    while flag :
+        cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
+        while cuanto_saldo < 0 or cuanto_saldo == 0:
+            print("No es posible ingrese una cantidad mayor a u$d 0")
+            cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
+        medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
+        while medio_pago <1 or medio_pago > 3:
+            print("Seleccion no valida intente otra vez")
+            medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado Pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
+
+        if medio_pago == 1:
+            print("El alias es: insertcoin.mp")
+            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")   
+            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+            flag = False
+
+        
+        elif medio_pago == 2:
+
+            tarjetaCredito = input("Ingrese su tarjeta de credito: ")
+            while bool(patron.fullmatch(tarjetaCredito)) == False:
+                print("No es valido")
+                tarjetaCredito = input("Ingrese su tarjeta de credito: ")
+            cvv = int(input("Ingrese el codigo de seguridad: ")) 
+            while cvv < 100 or cvv >999:
+                print ("No es valido")
+                cvv = int(input("Ingrese el codigo de seguridad: ")) 
+            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+            print ("Su compra ah sido exitosa")
+            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
+            flag = False
+
+        else:
+
+            tarjetaDedito = (input("Ingrese su tarjeta de credito: "))
+            while bool(patron.fullmatch(tarjetaDedito)) == False:
+                print("no es valido")
+                tarjetaDedito = input("Ingrese su tarjeta de credito: ")
+            cvv = int(input("Ingrese el codigo de seguridad: ")) 
+            while cvv < 100 or cvv >999:
+                print ("No es valido")
+                cvv = int(input("Ingrese el codigo de seguridad: ")) 
+            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+            print ("Su compra ah sido exitosa")
+            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
+            flag = False
+            
 def iniciarSesion():
 
     print("inicio de Sesion: ")
