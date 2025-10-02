@@ -1,8 +1,39 @@
 import random
 import re
-usuarios =[
-
+from functools import reduce
+import time
+usuarios = [
+    {
+        "id": 0,
+        "user": "juan123",
+        "password": "contraseñajuan",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 1000,
+        "notificaciones": []
+    },
+    {
+        "id": 1,
+        "user": "maria_gamer",
+        "password": "passmaria88",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 0,
+        "notificaciones": []
+    },
+    {
+        "id": 2,
+        "user": "lucho_ok",
+        "password": "lucho2024",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 0,
+        "notificaciones": []
+    }
 ]
+# usuarios = [
+
+# ]
 videojuegos = [
     {
         "id": 0,
@@ -140,11 +171,18 @@ videojuegos = [
         "duracion_horas": 75
     }
 ]
- 
-def crearUsuario():
-    
 
-    id = random.randint(1000,9999)
+codigos_descuento = {
+        "DESCUENTO10": 0.10,
+        "GAMER20": 0.20,
+        "SUPER30": 0.30
+    } 
+def crearUsuario():
+    if len(usuarios)==0:
+        id = 0
+    else:
+        idMaximo = usuarios[-1]["id"]
+        id = idMaximo+1
 
     usuario = input("nombre de usuario: ")
     nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
@@ -282,38 +320,154 @@ def iniciarSesion():
     return usuarioActivo
 
 def comprarJuegos(usuarioActivo):
-    flag=0
-    while flag !=1:
-        juegoElegido=mostrarJuegos()
-        
-        confirmacion=int(input("ingrese 1 si quiere comprar ese juego, 2 si quiere volver a ver la lista de juegos, 3 si desea salir:"))
-        while confirmacion>3 or confirmacion<1:
-            print("seleccione una opcion valida")
-            confirmacion=int(input("ingrese 1 si quiere comprar ese juego, 2 si quiere volver a ver la lista de juegos:"))
-        if confirmacion==1:
-            print("aguarde un momento, chequeando su saldo :)")
-            if usuarios[usuarioActivo]["saldo"]>= videojuegos[juegoElegido]["precio"]:
-                print("felicitaciones, compraste un juego")
-                usuarios[usuarioActivo]["juegos"].append(videojuegos[juegoElegido])
-                usuarios[usuarioActivo]["saldo"]-= videojuegos[juegoElegido]["precio"]
-                flag=1
-        
+   
+
+    flag = 0
+    while flag != 1:
+        juegoElegido = mostrarJuegos()
+
+        confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
+        while confirmacion not in [1, 2, 3]:
+            print("Seleccione una opción válida")
+            confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
+
+        if confirmacion == 1:
+            print("Aguarde un momento, chequeando su saldo")
+            precio = videojuegos[juegoElegido]["precio"]
+
+            usar_codigo = input("¿Tiene un código de descuento? (s/n): ").lower()
+            if usar_codigo == "s":
+                codigo = input("Ingrese el código: ").upper()
+                if codigo in codigos_descuento:
+                    descuento = codigos_descuento[codigo]
+                    precio_final = round(precio * (1 - descuento), 2)
+                    print(f"Código válido. Precio con descuento: {precio_final}")
+                else:
+                    print("Código inválido. Se aplicará el precio normal")
+                    precio_final = precio
             else:
-                print("aguarde un momento, chequeando su saldo :)")
-                print("lo sentimos, su saldo no es suficiente para comprar el juego :(")
-        
-        elif confirmacion==2:
-            print("volviendo a la lista de juegos...")
-        
+                precio_final = precio
+
+            if usuarios[usuarioActivo]["saldo"] >= precio_final:
+                print("Felicitaciones, compraste un juego")
+                juego = videojuegos[juegoElegido].copy()
+                juego["precioPagado"] = precio_final
+                juego["fechaCompra"] = time.strftime("%Y-%m-%d")
+                usuarios[usuarioActivo]["juegos"].append(juego)
+                usuarios[usuarioActivo]["saldo"] -= precio_final
+                flag = 1
+            else:
+                print("Lo sentimos, su saldo no es suficiente")
+
+        elif confirmacion == 2:
+            print("Volviendo a la lista de juegos")
+
         else:
+            print("Saliendo")
+            flag = 1
+
+
+def crearNotificacion(activo,destino,tipo):
+    
+    if tipo == "amistad":
+        mensaje =f"{usuarios[activo]["user"]} te ha enviado una solicitud de amistad"
+    elif tipo == "biblioteca":
+        mensaje = f"{usuarios[activo]["user"]}quiere compartir bibliotecas contigo"
+    else:
+        mensaje = f"{usuarios[activo["user"]]} te ha regalado un juego"
+
+    notificacion = {
+        "contenido":mensaje,
+        "remitente": activo,
+        "visto" : False,
+        "tipo": tipo
+    }
+    usuarios[destino]["notificaciones"].append(notificacion)
+
+def verNotificaciones(usuarioActivo):
+    notificacionesNoVistas = list(filter(lambda x: x["visto"] == False, usuarios[usuarioActivo]["notificaciones"]))
+
+    for notificacion in notificacionesNoVistas:
+        indiceRemitente = notificacion["remitente"]
+        if notificacion["tipo"] == "amistad":
+            print(notificacion["contenido"])
+            eleccion = input("Escribi Y para aceptar o N para rechazar: ")
+            if eleccion.lower() == "y":
+                usuarios[usuarioActivo]["amigos"].append(usuarios[indiceRemitente]["user"])
+                usuarios[indiceRemitente]["amigos"].append(usuarios[usuarioActivo]["user"])
+                print("Ahora", usuarios[usuarioActivo]['user'], "y", usuarios[indiceRemitente]['user'], "son amigos.")
+
+        elif notificacion["tipo"] == "biblioteca":
+            print(notificacion["contenido"])
+            eleccion = input("Escribi Y para aceptar o N para rechazar: ")
+            if eleccion.lower() == "y":
+                juegosFusionados = usuarios[usuarioActivo]["juegos"] + usuarios[indiceRemitente]["juegos"]
+                juegosFusionadosClear = []
+                for juego in juegosFusionados:
+                    if juego not in juegosFusionadosClear:
+                        juegosFusionadosClear.append(juego)
+                usuarios[usuarioActivo]["juegosBiblioteca"] = juegosFusionadosClear
+                usuarios[indiceRemitente]["juegosBiblioteca"] = juegosFusionadosClear
+                print("Bibliotecas de", usuarios[usuarioActivo]['user'], "y", usuarios[indiceRemitente]['user'], "fusionadas.")
+        else:
+            
+            notificacion["visto"] = True
+
+
+
+def enviarNotificacion(activo,tipo):
+    busqueda = input("a que usuario desea enviar la notificacion?")
+    usuarioRemitente = list(filter(lambda x : x["user"]== busqueda,usuarios))
+    
+    if len(usuarioRemitente) != 0:
+        crearNotificacion(activo,usuarioRemitente[0]["id"],tipo)
+    else:
+        print("usuario no encontrado")
+
+def reembolsarJuego(usuarioActivo):
+    if not usuarios[usuarioActivo]["juegos"]:
+        print("No tenés juegos comprados para reembolsar.")
+
+    else:   
+
+        print("Tus juegos comprados:")
+        for i in range(len(usuarios[usuarioActivo]["juegos"])):
+            juego = usuarios[usuarioActivo]["juegos"][i]
+            print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
+
+        indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
+        while indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
+            print("Selección inválida")
+            indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
+
+        if indice== -1:
             print("saliendo...")
-            flag=1
+        else:
+            juego = usuarios[usuarioActivo]["juegos"][indice]
+            fecha_actual = time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")
+            fecha_compra = time.strptime(juego["fechaCompra"], "%Y-%m-%d")
+            segundos_actual = time.mktime(fecha_actual)
+            segundos_compra = time.mktime(fecha_compra)
+            diferencia = abs(segundos_actual - segundos_compra)
 
-def main():
-    crearUsuario()
-    usuarioActivo = iniciarSesion()
-    cargaSaldo(usuarioActivo)
-    comprarJuegos(usuarioActivo)    
+            if diferencia <= 3 * 24 * 3600:
+                usuarios[usuarioActivo]["saldo"] += juego["precioPagado"]
+                usuarios[usuarioActivo]["juegos"].pop(indice)
+                print(f"Se reembolsó el juego '{juego['nombre']}'. Se acreditaron U$D {juego['precioPagado']} en tu cuenta.")
+            else:
+                print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
 
-main()
-print(usuarios)
+    
+
+
+# def main():
+#     crearUsuario()
+#     crearUsuario()
+#     usuarioActivo = iniciarSesion()
+#     cargaSaldo(usuarioActivo)
+#     comprarJuegos(usuarioActivo) 
+#     usuarioActivo = iniciarSesion()
+    
+
+# # main()
+
