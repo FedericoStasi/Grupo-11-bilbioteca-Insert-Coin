@@ -465,6 +465,8 @@ def main():
     flag3= True
     print ("Bienvenid@ a InsertCoin")
     while flag:
+        flag2 = True
+        flag3= True
         print ("--------------------------")
         print ("1-Crear un nuevo usuario\n2-Iniciar sesion")
         opcion1 = int (input ("Que desea seleccionar : "))
@@ -476,10 +478,10 @@ def main():
                 print ("--------------------------")        
                 usuarioActivo = iniciarSesion()
                 print ("--------------------------")
-                while flag:
+                while flag2:
                     print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
                     opcion2 = int (input ("Que desea seleccionar: "))
-                    while opcion2 not in [1,2,3]:
+                    while opcion2 not in [1,2,3,4,5,6,7]:
                         print ("No es valido, intente otra vez ")
                         opcion2 = int (input ("Que desea seleccionar: "))
                     if opcion2 == 1 :
@@ -511,7 +513,7 @@ def main():
                 while flag3:
                     print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
                     opcion3 = int (input ("Que desea seleccionar: "))
-                    while opcion3 not in [1,2,3]:
+                    while opcion3 not in [1,2,3,4,5,6,7]:
                         print ("No es valido, intente otra vez ")
                         opcion3 = int (input ("Que desea seleccionar: "))
                     if opcion3 ==1 :
