@@ -293,7 +293,7 @@ def cargaSaldo (usuarioActivo):
             print ("Su compra ah sido exitosa")
             print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
             flag = False
-            
+
 def iniciarSesion():
 
     print("inicio de Sesion: ")
@@ -457,7 +457,6 @@ def reembolsarJuego(usuarioActivo):
             else:
                 print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
 
-    
 
 def main():
     flag = True
@@ -536,42 +535,8 @@ def main():
                         print ("Usted cerro sesion")
                         flag3 = False 
 
-#funciones para usuario admin
-def buscarUsuario():
-    ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
-    while ingreso !=-1:
-        usuarioABuscar=input("ingrese el nombre del producto a buscar:")
-        coincidencia=False
-        indice=None
-        
 
-        for i in range(len(usuarios)):
-            if usuarioABuscar==usuarios[i]["user"]:
-                coincidencia= True
-                indice=i
 
-                if coincidencia==True:
-                    print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
-                    
-            else:
-                print("usuario no encontrado")
-
-def eliminarUsuarios():
-    usuarioABuscar=input("ingrese el nombre del producto a buscar:")
-    coincidencia=False
-    indice=None
-
-    for i in range(len(usuarios)):
-        if usuarioABuscar==usuarios[i]["user"]:
-            coincidencia= True
-            indice=i
-            if coincidencia==True:
-                print("desea eliminar el usuario?")
-                confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
-                if confirmacion==1:
-                    usuarios.pop(indice)
-        else:
-                print("usuario no encontrado")
 
 main()
 
