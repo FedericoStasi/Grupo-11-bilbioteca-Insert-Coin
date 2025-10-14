@@ -457,6 +457,44 @@ def reembolsarJuego(usuarioActivo):
             else:
                 print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
 
+#funciones para usuario admin
+def buscarUsuario():
+    ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
+    while ingreso !=-1:
+        usuarioABuscar=input("ingrese el nombre del producto a buscar:")
+        coincidencia=False
+        indice=None
+        
+
+        for i in range(len(usuarios)):
+            if usuarioABuscar==usuarios[i]["user"]:
+                coincidencia= True
+                indice=i
+
+                if coincidencia==True:
+                    print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
+                    
+            else:
+                print("usuario no encontrado")
+
+def eliminarUsuarios():
+    usuarioABuscar=input("ingrese el nombre del producto a buscar:")
+    coincidencia=False
+    indice=None
+
+    for i in range(len(usuarios)):
+        if usuarioABuscar==usuarios[i]["user"]:
+            coincidencia= True
+            indice=i
+            if coincidencia==True:
+                print("desea eliminar el usuario?")
+                confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
+                if confirmacion==1:
+                    usuarios.pop(indice)
+        else:
+                print("usuario no encontrado")
+
+
 
 def main():
     flag = True
@@ -464,8 +502,6 @@ def main():
     flag3= True
     print ("Bienvenid@ a InsertCoin")
     while flag:
-        flag2 = True
-        flag3= True
         print ("--------------------------")
         print ("1-Crear un nuevo usuario\n2-Iniciar sesion")
         opcion1 = int (input ("Que desea seleccionar : "))
@@ -477,10 +513,10 @@ def main():
                 print ("--------------------------")        
                 usuarioActivo = iniciarSesion()
                 print ("--------------------------")
-                while flag2:
+                while flag:
                     print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
                     opcion2 = int (input ("Que desea seleccionar: "))
-                    while opcion2 not in [1,2,3,4,5,6,7]:
+                    while opcion2 not in [1,2,3]:
                         print ("No es valido, intente otra vez ")
                         opcion2 = int (input ("Que desea seleccionar: "))
                     if opcion2 == 1 :
@@ -512,7 +548,7 @@ def main():
                 while flag3:
                     print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
                     opcion3 = int (input ("Que desea seleccionar: "))
-                    while opcion3 not in [1,2,3,4,5,6,7]:
+                    while opcion3 not in [1,2,3]:
                         print ("No es valido, intente otra vez ")
                         opcion3 = int (input ("Que desea seleccionar: "))
                     if opcion3 ==1 :
