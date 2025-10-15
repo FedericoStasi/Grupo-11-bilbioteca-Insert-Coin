@@ -494,7 +494,23 @@ def eliminarUsuarios():
         else:
                 print("usuario no encontrado")
 
+def cambiarPassword(usuarioActivo):
+    nueva = input("Nueva contraseña (mínimo 8): ")
+    repetir = input("Repetir contraseña: ")
 
+    if len(nueva) < 8 or nueva != repetir:
+        nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
+    else:
+        usuarios[usuarioActivo]["password"] = nueva
+
+def cambiarNombreUsuario(usuarioActivo):
+    usuario = input("nombre de usuario: ")
+    nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
+
+    if usuario in nombresUsuarios:
+        print("usuario repetido")
+    else:   
+        usuarios[usuarioActivo]["user"] = usuario
 
 def main():
     flag = True
