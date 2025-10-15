@@ -512,85 +512,54 @@ def cambiarNombreUsuario(usuarioActivo):
     else:   
         usuarios[usuarioActivo]["user"] = usuario
 
-def main():
+def menu_usuario(usuarioActivo):
     flag = True
-    flag2 = True
-    flag3= True
-    print ("Bienvenid@ a InsertCoin")
     while flag:
-        print ("--------------------------")
-        print ("1-Crear un nuevo usuario\n2-Iniciar sesion")
-        opcion1 = int (input ("Que desea seleccionar : "))
-        if opcion1 not in [1,2] : 
-            print ("Opcion no valida, intente otra vez ")
-        else:    
-            if opcion1 == 1:
-                crearUsuario()
-                print ("--------------------------")        
-                usuarioActivo = iniciarSesion()
-                print ("--------------------------")
-                while flag:
-                    print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
-                    opcion2 = int (input ("Que desea seleccionar: "))
-                    while opcion2 not in [1,2,3]:
-                        print ("No es valido, intente otra vez ")
-                        opcion2 = int (input ("Que desea seleccionar: "))
-                    if opcion2 == 1 :
-                        cargaSaldo(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion2 == 2:
-                        comprarJuegos(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion2 == 3:
-                        reembolsarJuego(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion2 == 4:
-                        enviarNotificacion (usuarioActivo,"amistad")
-                        print ("--------------------------")
-                    elif opcion2 == 5:
-                        enviarNotificacion(usuarioActivo,"biblioteca")
-                        print ("--------------------------")
-                    elif opcion2 == 6 :
-                        verNotificaciones(usuarioActivo)
-                        print ("--------------------------")
+        print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion")
+        opcion = int(input("¿Qué desea seleccionar?: "))
+        while opcion not in [1,2,3,4,5,6,7]:
+            print("No es válido, intente otra vez")
+            opcion = int(input("¿Qué desea seleccionar?: "))
+        if opcion == 1:
+            cargaSaldo(usuarioActivo)
+        elif opcion == 2:
+            comprarJuegos(usuarioActivo)
+        elif opcion == 3:
+            reembolsarJuego(usuarioActivo)
+        elif opcion == 4:
+            enviarNotificacion(usuarioActivo, "amistad")
+        elif opcion == 5:
+            enviarNotificacion(usuarioActivo, "biblioteca")
+        elif opcion == 6:
+            verNotificaciones(usuarioActivo)
+        else:
+            print("Usted cerró sesión")
+            flag = False
+        print("--------------------------")
 
-                    else:
-                        print ("Usted cerro sesion")
-                        flag2 = False     
+def menu_principal():
+    print("Bienvenid@ a InsertCoin")
+    flag = True
+    while flag:
+        print("--------------------------")
+        print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Salir")
+        opcion = int(input("¿Qué desea seleccionar?: "))
+        while opcion not in [1,2,3]:
+            print("Opción no válida, intente otra vez")
+            opcion = int(input("¿Qué desea seleccionar?: "))
+        if opcion == 1:
+            crearUsuario()
+            usuarioActivo = iniciarSesion()
+            if usuarioActivo is not None:
+                menu_usuario(usuarioActivo)
+        elif opcion == 2:
+            usuarioActivo = iniciarSesion()
+            if usuarioActivo is not None:
+                menu_usuario(usuarioActivo)
+        else:
+            print("¡Gracias por usar InsertCoin!")
+            flag = False
 
-            else:
-                usuarioActivo = iniciarSesion()
-                print ("--------------------------")
-                while flag3:
-                    print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion ")
-                    opcion3 = int (input ("Que desea seleccionar: "))
-                    while opcion3 not in [1,2,3]:
-                        print ("No es valido, intente otra vez ")
-                        opcion3 = int (input ("Que desea seleccionar: "))
-                    if opcion3 ==1 :
-                        cargaSaldo(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion3 ==2:
-                        comprarJuegos(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion3 == 3:
-                        reembolsarJuego(usuarioActivo)
-                        print ("--------------------------")
-                    elif opcion3 == 4:
-                        enviarNotificacion (usuarioActivo,"amistad")
-                        print ("--------------------------")
-                    elif opcion3 == 5:
-                        enviarNotificacion(usuarioActivo,"biblioteca")
-                        print ("--------------------------")
-                    elif opcion3 == 6 :
-                        verNotificaciones(usuarioActivo)
-                        print ("--------------------------")
-                    else:
-                        print ("Usted cerro sesion")
-                        flag3 = False 
+menu_principal()
 
-
-
-
-main()
 
