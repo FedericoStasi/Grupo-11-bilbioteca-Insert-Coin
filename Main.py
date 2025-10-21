@@ -472,7 +472,7 @@ def buscarUsuario():
                 indice=i
 
                 if coincidencia==True:
-                    print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
+                    print("usuarios encontrados")#consultar como hacer para poder usar el indice para printear la info 
                     
             else:
                 print("usuario no encontrado")
@@ -493,6 +493,11 @@ def eliminarUsuarios():
                     usuarios.pop(indice)
         else:
                 print("usuario no encontrado")
+
+
+
+
+
 
 def cambiarPassword(usuarioActivo):
     nueva = input("Nueva contraseña (mínimo 8): ")
