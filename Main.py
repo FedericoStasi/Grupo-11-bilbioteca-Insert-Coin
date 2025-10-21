@@ -494,9 +494,18 @@ def eliminarUsuarios():
         else:
                 print("usuario no encontrado")
 
+def inspeccionarUsuario(indice):#modificar pq hay algo que esta mal 
+    ingreso=int(input("ingrese 1 para inspeccionar al usuario, 2 para otorgarle un juego, ingrese 3 para eliminarle un juego : "))
+    if ingreso==1:
+        print(usuarios[indice])
 
-
-
+def agregarJuegoAUsuario():#agregar el append a la lista de diccionarios 
+    juego=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
+    if juego in videojuegos and juego not in usuarios["juegos"]:
+        usuarios.append(juego["juegos"])#modificar este append pq esta mal
+        
+    else:
+        print("ese juego no puede ser regalado a ese usuario :(")
 
 
 def cambiarPassword(usuarioActivo):
