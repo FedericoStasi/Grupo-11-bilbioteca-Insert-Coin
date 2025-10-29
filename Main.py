@@ -187,19 +187,18 @@ def crearUsuario():
     usuario = input("nombre de usuario: ")
     nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
 
-    while usuario in nombresUsuarios:
+    if usuario in nombresUsuarios:
         print("usuario repetido")
-        usuario = input("nombre de usuario: ")
+        return False
 
 
 
     password = input("cree su contraseña con 8 caracteres minimo: ")
     password2 = input("repita su contraseña por favor")
 
-    while len(password)<8 or password2 != password:
+    if len(password)<8 or password2 != password:
         print("contraseñas no coincidentes o con cantidad de caracteres invalida")
-        password = input("cree su contraseña con 8 caracteres minimo: ")
-        password2 = input("repita su contraseña por favor")
+        return False
 
     amigos = []
     juegos = []
@@ -227,7 +226,7 @@ def mostrarJuegos():
     juegoElegido = int(input("selecione un juego: "))
     while juegoElegido <1 or juegoElegido >len(videojuegos)-1:
         print("ingreso invalido")
-        juegoElegido = int(input("selecione un juego: "))
+        return False
     
     datosJuego(juegoElegido)
     
@@ -249,13 +248,14 @@ def cargaSaldo (usuarioActivo):
     flag = True
     while flag :
         cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
-        while cuanto_saldo < 0 or cuanto_saldo == 0:
+        if cuanto_saldo < 0 or cuanto_saldo == 0:
             print("No es posible ingrese una cantidad mayor a u$d 0")
-            cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
+            return False
+        
         medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
-        while medio_pago <1 or medio_pago > 3:
+        if medio_pago <1 or medio_pago > 3:
             print("Seleccion no valida intente otra vez")
-            medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado Pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
+            return False
 
         if medio_pago == 1:
             print("El alias es: insertcoin.mp")
@@ -267,13 +267,13 @@ def cargaSaldo (usuarioActivo):
         elif medio_pago == 2:
 
             tarjetaCredito = input("Ingrese su tarjeta de credito: ")
-            while bool(patron.fullmatch(tarjetaCredito)) == False:
+            if bool(patron.fullmatch(tarjetaCredito)) == False:
                 print("No es valido")
-                tarjetaCredito = input("Ingrese su tarjeta de credito: ")
+                return False
             cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999:
+            if cvv < 100 or cvv >999:
                 print ("No es valido")
-                cvv = int(input("Ingrese el codigo de seguridad: ")) 
+                return False
             usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
             print ("Su compra ah sido exitosa")
             print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
@@ -282,13 +282,13 @@ def cargaSaldo (usuarioActivo):
         else:
 
             tarjetaDedito = (input("Ingrese su tarjeta de credito: "))
-            while bool(patron.fullmatch(tarjetaDedito)) == False:
+            if bool(patron.fullmatch(tarjetaDedito)) == False:
                 print("no es valido")
-                tarjetaDedito = input("Ingrese su tarjeta de credito: ")
+                return False
             cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999:
+            if cvv < 100 or cvv >999:
                 print ("No es valido")
-                cvv = int(input("Ingrese el codigo de seguridad: ")) 
+                return False
             usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
             print ("Su compra ah sido exitosa")
             print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
@@ -327,9 +327,9 @@ def comprarJuegos(usuarioActivo):
         juegoElegido = mostrarJuegos()
 
         confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
-        while confirmacion not in [1, 2, 3]:
+        if confirmacion not in [1, 2, 3]:
             print("Seleccione una opción válida")
-            confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
+            return False
 
         if confirmacion == 1:
             print("Aguarde un momento, chequeando su saldo")
@@ -436,10 +436,9 @@ def reembolsarJuego(usuarioActivo):
             print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
 
         indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
-        while indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
+        if indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
             print("Selección inválida")
-            indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
-
+            return False
         if indice== -1:
             print("saliendo...")
         else:
