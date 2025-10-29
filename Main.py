@@ -177,6 +177,7 @@ codigos_descuento = {
         "GAMER20": 0.20,
         "SUPER30": 0.30
     } 
+
 def crearUsuario():
     if len(usuarios)==0:
         id = 0
@@ -366,7 +367,6 @@ def comprarJuegos(usuarioActivo):
             print("Saliendo")
             flag = 1
 
-
 def crearNotificacion(activo,destino,tipo):
     
     if tipo == "amistad":
@@ -413,8 +413,6 @@ def verNotificaciones(usuarioActivo):
             
             notificacion["visto"] = True
 
-
-
 def enviarNotificacion(activo,tipo):
     busqueda = input("a que usuario desea enviar la notificacion?")
     usuarioRemitente = list(filter(lambda x : x["user"]== busqueda,usuarios))
@@ -456,7 +454,7 @@ def reembolsarJuego(usuarioActivo):
             else:
                 print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
 
-#funciones para usuario admin
+#funciones para usuario admin #
 def buscarUsuario():
     ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
     while ingreso !=-1:
@@ -469,10 +467,15 @@ def buscarUsuario():
                 coincidencia= True
                 usuarioEncontrado=i
                 print(usuarios[usuarioEncontrado])
+                accionARealizar=int(input("ingrese: 1 para eliminar usuario, 2 para agregar un juego a un usuario."))
+                if accionARealizar == 1:
+                    eliminarUsuario=eliminarUsuarios(usuarioEncontrado)
+                if accionARealizar ==2:
+                    agregarJuegoAlUsuario=agregarJuegoAUsuario(usuarioEncontrado)
             else:
                 print("usuario no encontrado")
             
-    return usuarioEncontrado
+    return usuarioEncontrado #retorna para poder usar el indice en el resto de funciones de amdin
 
 def eliminarUsuarios(usuarioEncontrado):#el parametro es el return de buscar usuario
     print("desea eliminar el usuario?")
@@ -480,7 +483,6 @@ def eliminarUsuarios(usuarioEncontrado):#el parametro es el return de buscar usu
     if confirmacion==1:
         usuarios.pop(usuarioEncontrado)
     
-
 def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar usuario
     juego=mostrarJuegos()
     if juego in videojuegos and juego not in usuarios[usuarioEncontrado]["juegos"]:
@@ -489,6 +491,7 @@ def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar
     else:
         print("ese juego no puede ser regalado a ese usuario :(")
 
+#termino de funciones de usuario admin #
 
 def cambiarPassword(usuarioActivo):
     nueva = input("Nueva contraseña (mínimo 8): ")
