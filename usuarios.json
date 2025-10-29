@@ -1,0 +1,38 @@
+[
+    {
+        "id": 0,
+        "user": "juan123",
+        "password": "contrasenajjuan",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 1000,
+        "notificaciones": []
+    },
+    {
+        "id": 1,
+        "user": "maria_gamer",
+        "password": "passmaria88",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 0,
+        "notificaciones": []
+    },
+    {
+        "id": 2,
+        "user": "lucho_ok",
+        "password": "lucho2024",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 0,
+        "notificaciones": []
+    },
+    {
+        "id": 3,
+        "user": "fede",
+        "password": "12345678",
+        "amigos": [],
+        "juegos": [],
+        "saldo": 0,
+        "notificaciones": []
+    }
+]
