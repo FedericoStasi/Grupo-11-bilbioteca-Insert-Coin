@@ -494,13 +494,15 @@ def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar
 #termino de funciones de usuario admin #
 
 def cambiarPassword(usuarioActivo):
-    nueva = input("Nueva contraseña (mínimo 8): ")
-    repetir = input("Repetir contraseña: ")
+    try:
+        nueva = input("Nueva contraseña (mínimo 8): ")
+        repetir = input("Repetir contraseña: ")
 
-    if len(nueva) < 8 or nueva != repetir:
-        nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
-    else:
-        usuarios[usuarioActivo]["password"] = nueva
+        if len(nueva) < 8 or nueva != repetir:
+            nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
+        else:
+            usuarios[usuarioActivo]["password"] = nueva
+    except
 
 def cambiarNombreUsuario(usuarioActivo):
     usuario = input("nombre de usuario: ")
