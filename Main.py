@@ -4,7 +4,7 @@ from functools import reduce
 import time
 import os
 import json
-
+global usuarios,videojuegos
 
 videojuegos = []
 codigos_descuento = {
