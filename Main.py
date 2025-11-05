@@ -25,8 +25,6 @@ def aplicarGiftCard(usuarioActivo):#to do,
     if ingreso=="g0t_50":
         pass
 
-def escrituraArchivoJason():#to do 
-    pass
 
 def cargarDatos():
     rutaUsuarios = os.path.join(os.path.dirname(__file__),"usuarios.json")
