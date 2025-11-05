@@ -13,7 +13,20 @@ codigos_descuento = {
         "SUPER30": 0.30
     } 
 
+gift_card = {
+    "g0t_50": 50,
+    "g1t_5": 5,
+    "g0t_100":100 ,
+    "g1t_10": 10
+}
 
+def aplicarGiftCard(usuarioActivo):#to do,
+    ingreso=input("ingrese su codigo de giftcard: ")
+    if ingreso=="g0t_50":
+        pass
+
+def escrituraArchivoJason():#to do 
+    pass
 
 def cargarDatos():
     rutaUsuarios = os.path.join(os.path.dirname(__file__),"usuarios.json")
@@ -362,15 +375,13 @@ def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar
 #termino de funciones de usuario admin #
 
 def cambiarPassword(usuarioActivo):
-    try:
-        nueva = input("Nueva contraseña (mínimo 8): ")
-        repetir = input("Repetir contraseña: ")
+    nueva = input("Nueva contraseña (mínimo 8): ")
+    repetir = input("Repetir contraseña: ")
 
-        if len(nueva) < 8 or nueva != repetir:
-            nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
-        else:
-            usuarios[usuarioActivo]["password"] = nueva
-    except
+    if len(nueva) < 8 or nueva != repetir:
+        nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
+    else:
+        usuarios[usuarioActivo]["password"] = nueva
 
 def cambiarNombreUsuario(usuarioActivo):
     usuario = input("nombre de usuario: ")
@@ -429,14 +440,7 @@ def menu_principal():
             print("¡Gracias por usar InsertCoin!")
             flag = False
 
-def main():
-    global usuarios,videojuegos
-    usuarios,videojuegos = cargarDatos()
-    
-    # print(usuarios)
-    # print(videojuegos)
-    menu_principal()
+menu_principal()
 
-main()
 
 
