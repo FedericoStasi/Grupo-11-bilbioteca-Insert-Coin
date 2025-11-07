@@ -181,29 +181,32 @@ def cargaSaldo (usuarioActivo):
             flag = False
 
 def iniciarSesion():
+    try:
+        print("inicio de Sesion: ")
+        usuarioIngresado = input("ingrese su usuario: ")
+        contraseñaIngresada = input("ingrese su contraseña: ")
+        
+        usuarioActivo= 0 
+        coincidencia = False
+        indice = len(usuarios)
 
-    print("inicio de Sesion: ")
-    usuarioIngresado = input("ingrese su usuario: ")
-    contraseñaIngresada = input("ingrese su contraseña: ")
-    
-    usuarioActivo= 0 
-    coincidencia = False
-    indice = len(usuarios)
+        for i in range (indice):
+            if usuarioIngresado == usuarios[i]["user"]:
+                if contraseñaIngresada == usuarios[i]["password"]:
+                    usuarioActivo = i
+                    coincidencia = True
+        
+        if coincidencia == True:
+            print(f"bienvenido {usuarios[usuarioActivo]["user"]} ")
 
-    for i in range (indice):
-        if usuarioIngresado == usuarios[i]["user"]:
-            if contraseñaIngresada == usuarios[i]["password"]:
-                usuarioActivo = i
-                coincidencia = True
-    
-    if coincidencia == True:
-        print(f"bienvenido {usuarios[usuarioActivo]["user"]} ")
+        else:
+            print("alguno de los datos es incorrecto")
+            usuarioActivo = None
 
-    else:
-        print("alguno de los datos es incorrecto")
-        usuarioActivo = None
-    
-    return usuarioActivo
+    except Exception as e:
+        print("error", e)
+        
+        return usuarioActivo
 
 def comprarJuegos(usuarioActivo):
    
@@ -253,21 +256,23 @@ def comprarJuegos(usuarioActivo):
             flag = 1
 
 def crearNotificacion(activo,destino,tipo):
-    
-    if tipo == "amistad":
-        mensaje =f"{usuarios[activo]["user"]} te ha enviado una solicitud de amistad"
-    elif tipo == "biblioteca":
-        mensaje = f"{usuarios[activo]["user"]}quiere compartir bibliotecas contigo"
-    else:
-        mensaje = f"{usuarios[activo["user"]]} te ha regalado un juego"
+    try:
+        if tipo == "amistad":
+            mensaje =f"{usuarios[activo]["user"]} te ha enviado una solicitud de amistad"
+        elif tipo == "biblioteca":
+            mensaje = f"{usuarios[activo]["user"]}quiere compartir bibliotecas contigo"
+        else:
+            mensaje = f"{usuarios[activo["user"]]} te ha regalado un juego"
 
-    notificacion = {
-        "contenido":mensaje,
-        "remitente": activo,
-        "visto" : False,
-        "tipo": tipo
-    }
-    usuarios[destino]["notificaciones"].append(notificacion)
+        notificacion = {
+            "contenido":mensaje,
+            "remitente": activo,
+            "visto" : False,
+            "tipo": tipo
+        }
+        usuarios[destino]["notificaciones"].append(notificacion)
+    except Exception as e:
+        print("error", e)
 
 def verNotificaciones(usuarioActivo):
     notificacionesNoVistas = list(filter(lambda x: x["visto"] == False, usuarios[usuarioActivo]["notificaciones"]))
@@ -299,93 +304,111 @@ def verNotificaciones(usuarioActivo):
             notificacion["visto"] = True
 
 def enviarNotificacion(activo,tipo):
-    busqueda = input("a que usuario desea enviar la notificacion?")
-    usuarioRemitente = list(filter(lambda x : x["user"]== busqueda,usuarios))
-    
-    if len(usuarioRemitente) != 0:
-        crearNotificacion(activo,usuarioRemitente[0]["id"],tipo)
-    else:
-        print("usuario no encontrado")
+    try:
+        busqueda = input("a que usuario desea enviar la notificacion?")
+        usuarioRemitente = list(filter(lambda x : x["user"]== busqueda,usuarios))
+        
+        if len(usuarioRemitente) != 0:
+            crearNotificacion(activo,usuarioRemitente[0]["id"],tipo)
+        else:
+            print("usuario no encontrado")
+    except Exception as e:
+        print("error", e)
 
 def reembolsarJuego(usuarioActivo):
-    if not usuarios[usuarioActivo]["juegos"]:
-        print("No tenés juegos comprados para reembolsar.")
+    try:
+        if not usuarios[usuarioActivo]["juegos"]:
+            print("No tenés juegos comprados para reembolsar.")
 
-    else:   
+        else:   
 
-        print("Tus juegos comprados:")
-        for i in range(len(usuarios[usuarioActivo]["juegos"])):
-            juego = usuarios[usuarioActivo]["juegos"][i]
-            print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
+            print("Tus juegos comprados:")
+            for i in range(len(usuarios[usuarioActivo]["juegos"])):
+                juego = usuarios[usuarioActivo]["juegos"][i]
+                print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
 
-        indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
-        if indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
-            print("Selección inválida")
-            return False
-        if indice== -1:
-            print("saliendo...")
-        else:
-            juego = usuarios[usuarioActivo]["juegos"][indice]
-            fecha_actual = time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")
-            fecha_compra = time.strptime(juego["fechaCompra"], "%Y-%m-%d")
-            segundos_actual = time.mktime(fecha_actual)
-            segundos_compra = time.mktime(fecha_compra)
-            diferencia = abs(segundos_actual - segundos_compra)
-
-            if diferencia <= 3 * 24 * 3600:
-                usuarios[usuarioActivo]["saldo"] += juego["precioPagado"]
-                usuarios[usuarioActivo]["juegos"].pop(indice)
-                print(f"Se reembolsó el juego '{juego['nombre']}'. Se acreditaron U$D {juego['precioPagado']} en tu cuenta.")
+            indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
+            if indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
+                print("Selección inválida")
+                return False
+            if indice== -1:
+                print("saliendo...")
             else:
-                print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
+                juego = usuarios[usuarioActivo]["juegos"][indice]
+                fecha_actual = time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")
+                fecha_compra = time.strptime(juego["fechaCompra"], "%Y-%m-%d")
+                segundos_actual = time.mktime(fecha_actual)
+                segundos_compra = time.mktime(fecha_compra)
+                diferencia = abs(segundos_actual - segundos_compra)
+
+                if diferencia <= 3 * 24 * 3600:
+                    usuarios[usuarioActivo]["saldo"] += juego["precioPagado"]
+                    usuarios[usuarioActivo]["juegos"].pop(indice)
+                    print(f"Se reembolsó el juego '{juego['nombre']}'. Se acreditaron U$D {juego['precioPagado']} en tu cuenta.")
+                else:
+                    print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
+    except Exception as e:
+        print("error", e)
 
 #funciones para usuario admin #
 def buscarUsuario():
-    ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
-    while ingreso !=-1:
-        usuarioABuscar=input("ingrese el nombre del producto a buscar:")
-        coincidencia=False
-        usuarioEncontrado=None
-        
-        for i in range(len(usuarios)):
-            if usuarioABuscar==usuarios[i]["user"]:
-                coincidencia= True
-                usuarioEncontrado=i
-                print(usuarios[usuarioEncontrado])
-                accionARealizar=int(input("ingrese: 1 para eliminar usuario, 2 para agregar un juego a un usuario."))
-                if accionARealizar == 1:
-                    eliminarUsuario=eliminarUsuarios(usuarioEncontrado)
-                if accionARealizar ==2:
-                    agregarJuegoAlUsuario=agregarJuegoAUsuario(usuarioEncontrado)
-            else:
-                print("usuario no encontrado")
+    try:
+        ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
+        while ingreso !=-1:
+            usuarioABuscar=input("ingrese el nombre del producto a buscar:")
+            coincidencia=False
+            usuarioEncontrado=None
             
+            for i in range(len(usuarios)):
+                if usuarioABuscar==usuarios[i]["user"]:
+                    coincidencia= True
+                    usuarioEncontrado=i
+                    print(usuarios[usuarioEncontrado])
+                    accionARealizar=int(input("ingrese: 1 para eliminar usuario, 2 para agregar un juego a un usuario."))
+                    if accionARealizar == 1:
+                        eliminarUsuario=eliminarUsuarios(usuarioEncontrado)
+                    if accionARealizar ==2:
+                        agregarJuegoAlUsuario=agregarJuegoAUsuario(usuarioEncontrado)
+                else:
+                    print("usuario no encontrado")
+    except Exception as e:
+        print("error", e)
+                
     return usuarioEncontrado #retorna para poder usar el indice en el resto de funciones de amdin
 
 def eliminarUsuarios(usuarioEncontrado):#el parametro es el return de buscar usuario
-    print("desea eliminar el usuario?")
-    confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
-    if confirmacion==1:
-        usuarios.pop(usuarioEncontrado)
+    try:
+        print("desea eliminar el usuario?")
+        confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
+        if confirmacion==1:
+            usuarios.pop(usuarioEncontrado)
+    except Exception as e:
+        print("error", e)
     
 def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar usuario
-    juego=mostrarJuegos()
-    if juego in videojuegos and juego not in usuarios[usuarioEncontrado]["juegos"]:
-        usuarios.append(juego["juegos"])
-        
-    else:
-        print("ese juego no puede ser regalado a ese usuario :(")
+    try:
+        juego=mostrarJuegos()
+        if juego in videojuegos and juego not in usuarios[usuarioEncontrado]["juegos"]:
+            usuarios.append(juego["juegos"])
+            
+        else:
+            print("ese juego no puede ser regalado a ese usuario :(")
+    except Exception as e:
+        print("error", e)
 
 #termino de funciones de usuario admin #
 
 def cambiarPassword(usuarioActivo):
-    nueva = input("Nueva contraseña (mínimo 8): ")
-    repetir = input("Repetir contraseña: ")
+    try:
+        nueva = input("Nueva contraseña (mínimo 8): ")
+        repetir = input("Repetir contraseña: ")
 
-    if len(nueva) < 8 or nueva != repetir:
-        nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
-    else:
-        usuarios[usuarioActivo]["password"] = nueva
+        if len(nueva) < 8 or nueva != repetir:
+            nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
+        else:
+            usuarios[usuarioActivo]["password"] = nueva
+    except Exception as e:
+        print("error", e)
 
 def cambiarNombreUsuario(usuarioActivo):
     usuario = input("nombre de usuario: ")
