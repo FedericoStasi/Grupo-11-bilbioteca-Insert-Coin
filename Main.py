@@ -21,9 +21,15 @@ gift_card = {
 }
 
 def aplicarGiftCard(usuarioActivo):#to do,
-    ingreso=input("ingrese su codigo de giftcard: ")
-    if ingreso=="g0t_50":
-        pass
+    usarGiftCard = input("¿desea usar una gift card? (s/n): ").lower()
+    if usarGiftCard == "s":
+        giftCard = input("Ingrese el codigo de la giftcard:  ").upper()
+        if giftCard in gift_card:
+            valor = gift_card[gift_card]
+            usuarios[usuarioActivo]["saldo"]+=valor
+        else:
+            print("gift card inexistente.")
+            
 
 
 def cargarDatos():
@@ -365,7 +371,7 @@ def eliminarUsuarios(usuarioEncontrado):#el parametro es el return de buscar usu
 def agregarJuegoAUsuario(usuarioEncontrado):#el parametro es el return de buscar usuario
     juego=mostrarJuegos()
     if juego in videojuegos and juego not in usuarios[usuarioEncontrado]["juegos"]:
-        usuarios.append(juego["juegos"])#modificar este append pq esta mal
+        usuarios.append(juego["juegos"])
         
     else:
         print("ese juego no puede ser regalado a ese usuario :(")
