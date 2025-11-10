@@ -10,11 +10,11 @@
     },
     {
         "id": 1,
-        "nombre": "God of War Ragnarök",
+        "nombre": "God of War Ragnar\u00c3\u00b6k",
         "compania": "Santa Monica Studio",
         "precio": 69.99,
         "trofeos_totales": 70,
-        "descripcion": "Kratos y Atreus enfrentan a dioses nórdicos en una épica aventura.",
+        "descripcion": "Kratos y Atreus enfrentan a dioses n\u00c3\u00b3rdicos en una \u00c3\u00a9pica aventura.",
         "duracion_horas": 60
     },
     {
@@ -32,7 +32,7 @@
         "compania": "Mojang",
         "precio": 29.99,
         "trofeos_totales": 114,
-        "descripcion": "Juego de construcción y supervivencia en un mundo de bloques.",
+        "descripcion": "Juego de construcci\u00c3\u00b3n y supervivencia en un mundo de bloques.",
         "duracion_horas": 999
     },
     {
@@ -50,7 +50,7 @@
         "compania": "Rockstar Games",
         "precio": 59.99,
         "trofeos_totales": 51,
-        "descripcion": "Una historia épica en el Salvaje Oeste con Arthur Morgan y la banda Van der Linde.",
+        "descripcion": "Una historia \u00c3\u00a9pica en el Salvaje Oeste con Arthur Morgan y la banda Van der Linde.",
         "duracion_horas": 90
     },
     {
@@ -59,7 +59,7 @@
         "compania": "CD Projekt Red",
         "precio": 39.99,
         "trofeos_totales": 78,
-        "descripcion": "Geralt de Rivia busca a Ciri en un vasto mundo lleno de monstruos y política.",
+        "descripcion": "Geralt de Rivia busca a Ciri en un vasto mundo lleno de monstruos y pol\u00c3\u00adtica.",
         "duracion_horas": 120
     },
     {
@@ -68,7 +68,7 @@
         "compania": "FromSoftware",
         "precio": 49.99,
         "trofeos_totales": 43,
-        "descripcion": "Acción RPG desafiante en un mundo oscuro y decadente.",
+        "descripcion": "Acci\u00c3\u00b3n RPG desafiante en un mundo oscuro y decadente.",
         "duracion_horas": 80
     },
     {
@@ -77,7 +77,7 @@
         "compania": "Square Enix",
         "precio": 59.99,
         "trofeos_totales": 54,
-        "descripcion": "Remake del clásico JRPG con gráficos modernos y combates en tiempo real.",
+        "descripcion": "Remake del cl\u00c3\u00a1sico JRPG con gr\u00c3\u00a1ficos modernos y combates en tiempo real.",
         "duracion_horas": 50
     },
     {
@@ -86,7 +86,7 @@
         "compania": "Atlus",
         "precio": 59.99,
         "trofeos_totales": 53,
-        "descripcion": "Los Ladrones Fantasma de Corazones luchan contra la corrupción en Tokio.",
+        "descripcion": "Los Ladrones Fantasma de Corazones luchan contra la corrupci\u00c3\u00b3n en Tokio.",
         "duracion_horas": 100
     },
     {
@@ -95,7 +95,7 @@
         "compania": "FromSoftware",
         "precio": 59.99,
         "trofeos_totales": 34,
-        "descripcion": "Un shinobi en busca de venganza en un Japón feudal ficticio.",
+        "descripcion": "Un shinobi en busca de venganza en un Jap\u00c3\u00b3n feudal ficticio.",
         "duracion_horas": 50
     },
     {
@@ -104,7 +104,7 @@
         "compania": "CD Projekt Red",
         "precio": 59.99,
         "trofeos_totales": 45,
-        "descripcion": "Un RPG futurista en Night City lleno de decisiones y acción.",
+        "descripcion": "Un RPG futurista en Night City lleno de decisiones y acci\u00c3\u00b3n.",
         "duracion_horas": 70
     },
     {
@@ -120,9 +120,9 @@
         "id": 13,
         "nombre": "Overwatch 2",
         "compania": "Blizzard Entertainment",
-        "precio": 0.00,
+        "precio": 0.0,
         "trofeos_totales": 60,
-        "descripcion": "Shooter en equipos de héroes con habilidades únicas.",
+        "descripcion": "Shooter en equipos de h\u00c3\u00a9roes con habilidades \u00c3\u00banicas.",
         "duracion_horas": 200
     },
     {
@@ -131,7 +131,7 @@
         "compania": "FromSoftware",
         "precio": 19.99,
         "trofeos_totales": 40,
-        "descripcion": "Un RPG de acción gótica ambientado en la ciudad maldita de Yharnam.",
+        "descripcion": "Un RPG de acci\u00c3\u00b3n g\u00c3\u00b3tica ambientado en la ciudad maldita de Yharnam.",
         "duracion_horas": 75
     }
 ]
