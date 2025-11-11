@@ -11,10 +11,10 @@ codigos_descuento = {
     } 
 
 def cargarDatos():
-    rutaUsuarios = os.path.join(os.path.dirname(__file__),"usuarios.json")
-    rutaJuegos = os.path.join(os.path.dirname(__file__),"juegos.json")
+    rutaUsuarios = os.path.join(os.path.dirname(__file__),"usuarios.json")#ruta de archivo de usuarios
+    rutaJuegos = os.path.join(os.path.dirname(__file__),"juegos.json")#ruta de arhivo juego
 
-    try:
+    try: #json modo lectura
         with open(rutaUsuarios,"r") as archivo:
             usuariosObtenidos = json.load(archivo)
 
@@ -24,11 +24,13 @@ def cargarDatos():
         
     except Exception as e:
         print("error", e) 
-def guardarDatos():
-    rutaUsuarios = os.path.join(os.path.dirname(__file__), "usuarios.json")
-    rutaJuegos = os.path.join(os.path.dirname(__file__), "juegos.json")
 
-    try:
+
+def guardarDatos():
+    rutaUsuarios = os.path.join(os.path.dirname(__file__), "usuarios.json")#ruta de arichivo usuarios
+    rutaJuegos = os.path.join(os.path.dirname(__file__), "juegos.json")#ruta archivo juegos
+
+    try:#json escritura 
         with open(rutaUsuarios, "w", encoding="utf-8") as archivoUsuarios:
             json.dump(usuarios, archivoUsuarios, indent=4)
 
@@ -51,7 +53,7 @@ def crearUsuario():
     nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
 
     while usuario in nombresUsuarios:
-        print("usuario repetido")
+        print("usuario repetido")#valida que el usuario no exista, mediante la lista de comprension de la linea 53
         usuario = input("nombre de usuario: ")
 
 
@@ -59,7 +61,7 @@ def crearUsuario():
     password = input("cree su contraseña con 8 caracteres minimo: ")
     password2 = input("repita su contraseña por favor")
 
-    while len(password)<8 or password2 != password:
+    while len(password)<8 or password2 != password:#valida requisitos de psw
         print("contraseñas no coincidentes o con cantidad de caracteres invalida")
         password = input("cree su contraseña con 8 caracteres minimo: ")
         password2 = input("repita su contraseña por favor")
@@ -68,7 +70,7 @@ def crearUsuario():
     juegos = []
     notificaciones = []
 
-    nuevoUsuario ={
+    nuevoUsuario ={ #apped al diccionario
         "id": id,
         "user":usuario,
         "password":password,
@@ -78,7 +80,7 @@ def crearUsuario():
         "notificaciones": notificaciones,
     }
 
-    usuarios.append(nuevoUsuario)
+    usuarios.append(nuevoUsuario)#se agrega el diccionario a la lista
 
     print("usario creado con exito")
 
@@ -86,7 +88,7 @@ def mostrarJuegos():
     try:
         print("estos son los juegos disponibles en nuestra biblioteca, presione cualquiera para conocer su infomracion")
         for i in range(len(videojuegos)):
-            print(f"{i}){videojuegos[i]['nombre']}")
+            print(f"{i}){videojuegos[i]['nombre']}")#printea lista de juegos
         
         try:
             juegoElegido = int(input("selecione un juego: "))
@@ -94,7 +96,7 @@ def mostrarJuegos():
             print("Por favor ingrese un número válido")
             return False
             
-        if juegoElegido < 0 or juegoElegido > len(videojuegos)-1:
+        if juegoElegido < 0 or juegoElegido > len(videojuegos)-1:#valida numeros logicos
             print("ingreso invalido")
             return False
         
@@ -105,7 +107,7 @@ def mostrarJuegos():
         return False
 
 def datosJuego(id):
-    
+    #informacion de juegos
     print(f"Nombre: {videojuegos[id]["nombre"]}")
     print(f"Desarrollador: {videojuegos[id]["compania"]}")
     print(f"Descripcion: {videojuegos[id]["descripcion"]}")
@@ -114,17 +116,17 @@ def datosJuego(id):
     print(f"Durecion: {videojuegos[id]["duracion_horas"]}")
 
 def cargaSaldo (usuarioActivo):
-    patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$')
+    patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$') #expresion regular para validar tarjeta 
 
     
     flag = True
     while flag :
         cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
-        while cuanto_saldo < 0 or cuanto_saldo == 0:
+        while cuanto_saldo < 0 or cuanto_saldo == 0:#valida numeros logicos
             print("No es posible ingrese una cantidad mayor a u$d 0")
             cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
         medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
-        while medio_pago <1 or medio_pago > 3:
+        while medio_pago <1 or medio_pago > 3:#valida opciones logicas
             print("Seleccion no valida intente otra vez")
             medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado Pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
 
@@ -138,11 +140,11 @@ def cargaSaldo (usuarioActivo):
         elif medio_pago == 2:
 
             tarjetaCredito = input("Ingrese su tarjeta de credito: ")
-            while bool(patron.fullmatch(tarjetaCredito)) == False:
+            while bool(patron.fullmatch(tarjetaCredito)) == False: #valida la expresion regular de la linea 119
                 print("No es valido")
                 tarjetaCredito = input("Ingrese su tarjeta de credito: ")
             cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999:
+            while cvv < 100 or cvv >999:#valida 3 numeros de codigo de seguridad 
                 print ("No es valido")
                 cvv = int(input("Ingrese el codigo de seguridad: ")) 
             usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
@@ -153,11 +155,11 @@ def cargaSaldo (usuarioActivo):
         else:
 
             tarjetaDedito = (input("Ingrese su tarjeta de credito: "))
-            while bool(patron.fullmatch(tarjetaDedito)) == False:
+            while bool(patron.fullmatch(tarjetaDedito)) == False: #valida la expresion regular de la linea 119
                 print("no es valido")
                 tarjetaDedito = input("Ingrese su tarjeta de credito: ")
             cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999:
+            while cvv < 100 or cvv >999: #valida codigo de seguridad
                 print ("No es valido")
                 cvv = int(input("Ingrese el codigo de seguridad: ")) 
             usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
@@ -198,7 +200,7 @@ def comprarJuegos(usuarioActivo):
         juegoElegido = mostrarJuegos()
 
         confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
-        while confirmacion not in [1, 2, 3]:
+        while confirmacion not in [1, 2, 3]:#valida el rango propuesto
             print("Seleccione una opción válida")
             confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
 
@@ -210,7 +212,7 @@ def comprarJuegos(usuarioActivo):
             if usar_codigo == "s":
                 codigo = input("Ingrese el código: ").upper()
                 if codigo in codigos_descuento:
-                    descuento = codigos_descuento[codigo]
+                    descuento = codigos_descuento[codigo]#valida  si existe el codigo de descuento 
                     precio_final = round(precio * (1 - descuento), 2)
                     print(f"Código válido. Precio con descuento: {precio_final}")
                 else:
@@ -223,9 +225,9 @@ def comprarJuegos(usuarioActivo):
                 print("Felicitaciones, compraste un juego")
                 juego = videojuegos[juegoElegido].copy()
                 juego["precioPagado"] = precio_final
-                juego["fechaCompra"] = time.strftime("%Y-%m-%d")
+                juego["fechaCompra"] = time.strftime("%Y-%m-%d")#mediante libreria time guarda el tiempo de compra 
                 usuarios[usuarioActivo]["juegos"].append(juego)
-                usuarios[usuarioActivo]["saldo"] -= precio_final
+                usuarios[usuarioActivo]["saldo"] -= precio_final #descuenta el preciodel juego
                 flag = 1
             else:
                 print("Lo sentimos, su saldo no es suficiente")
@@ -378,14 +380,14 @@ def cambiarPassword(usuarioActivo):
 def cambiarNombreUsuario(usuarioActivo):
     try:
         usuario = input("nombre de usuario: ")
-        if usuario == "":
+        if usuario == "":#validacion basica
             print("El nombre de usuario no puede estar vacío")
             
             
         nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
 
         if usuario in nombresUsuarios:
-            print("usuario repetido")
+            print("usuario repetido")#valida que no exista el nuevo nombre
             return False
         else:   
             usuarios[usuarioActivo]["user"] = usuario
@@ -394,7 +396,7 @@ def cambiarNombreUsuario(usuarioActivo):
     except Exception as e:
         print("Error al cambiar nombre de usuario:", e)
 
-def menu_usuario(usuarioActivo):
+def menu_usuario(usuarioActivo):#menu visual 
     global usuarios
     flag = True
     while flag:
@@ -443,7 +445,7 @@ def menu_usuario(usuarioActivo):
             print("Error en el menú:", e)
     
 
-def menu_principal():
+def menu_principal():#menu visual 
     global usuarios
     print("Bienvenid@ a InsertCoin")
     flag = True
@@ -477,7 +479,7 @@ def menu_principal():
             guardarDatos()
             flag = False
 
-def administrador():
+def administrador():#menu visual 
     global usuarios
     flag = True
     while flag:
