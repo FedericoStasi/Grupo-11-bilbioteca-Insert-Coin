@@ -349,7 +349,7 @@ def buscarUsuario():
                 print("usuario no encontrado")
 
 def eliminarUsuarios():
-    usuarioABuscar=input("ingrese el nombre del producto a buscar:")
+    usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
     coincidencia=False
     indice=None
 
@@ -357,13 +357,14 @@ def eliminarUsuarios():
         if usuarioABuscar==usuarios[i]["user"]:
             coincidencia= True
             indice=i
-            if coincidencia==True:
-                print("desea eliminar el usuario?")
-                confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
-                if confirmacion==1:
-                    usuarios.pop(indice)
-        else:
-                print("usuario no encontrado")
+        
+    if coincidencia==True:
+        print("desea eliminar el usuario?")
+        confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
+        if confirmacion==1:
+            usuarios.pop(indice)
+    else:
+        print("usuario no encontrado")
 
 def cambiarPassword(usuarioActivo):
     nueva = input("Nueva contraseña (mínimo 8): ")
@@ -407,33 +408,33 @@ def menu_usuario(usuarioActivo):
                 print("No es válido, intente otra vez")
                 opcion = int(input("¿Qué desea seleccionar?: "))
             if opcion == 1:
-                list(usuarios)
+                usuarios = list(usuarios)
                 cargaSaldo(usuarioActivo)
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             elif opcion == 2:
-                list(usuarios)
+                usuarios = list(usuarios)
                 comprarJuegos(usuarioActivo)
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             elif opcion == 3:
-                list(usuarios)
+                usuarios = list(usuarios)
                 reembolsarJuego(usuarioActivo)
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             elif opcion == 4:
-                list(usuarios)
+                usuarios = list(usuarios)
                 enviarNotificacion(usuarioActivo, "amistad")
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             elif opcion == 5:
-                list(usuarios)
+                usuarios = list(usuarios)
                 enviarNotificacion(usuarioActivo, "biblioteca")
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             elif opcion == 6:
-                list(usuarios)
+                usuarios = list(usuarios)
                 verNotificaciones(usuarioActivo)
                 tuple(usuarios)
             elif opcion == 7:
-                list(usuarios)
+                usuarios = list(usuarios)
                 cambiarNombreUsuario(usuarioActivo)
-                tuple(usuarios)
+                usuarios = tuple(usuarios)
             else:
                 print("Usted cerró sesión")
                 flag = False
@@ -450,13 +451,13 @@ def menu_principal():
         print("--------------------------")
         print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Administrador\n4-Salir")
         opcion = int(input("¿Qué desea seleccionar?: "))
-        while opcion not in [1,2,3]:
+        while opcion not in [1,2,3,4]:
             print("Opción no válida, intente otra vez")
             opcion = int(input("¿Qué desea seleccionar?: "))
         if opcion == 1:
-            list(usuarios)
+            usuarios = list(usuarios)
             crearUsuario()
-            tuple(usuarios)
+            usuarios = tuple(usuarios)
             usuarioActivo = iniciarSesion()
             if usuarioActivo is not None:
                 menu_usuario(usuarioActivo)
@@ -492,9 +493,9 @@ def administrador():
         if opcion ==1:
             buscarUsuario()
         elif opcion ==2:
-            list(usuarios)
+            usuarios = list(usuarios)
             eliminarUsuarios()
-            tuple(usuarios)
+            usuarios = tuple(usuarios)
         else:
             print ("Cerraste sesion")
             flag = False
