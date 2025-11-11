@@ -1,8 +1,8 @@
 [
     {
         "id": 0,
-        "user": "juan123",
-        "password": "contrasenajjuan",
+        "user": "admin",
+        "password": "adminadmin",
         "amigos": [],
         "juegos": [],
         "saldo": 1000,

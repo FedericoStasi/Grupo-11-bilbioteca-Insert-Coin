@@ -83,18 +83,26 @@ def crearUsuario():
     print("usario creado con exito")
 
 def mostrarJuegos():
-    print("estos son los juegos disponibles en nuestra biblioteca, presione cualquiera para conocer su infomracion")
-    for i in range(len(videojuegos)):
-        print(f"{i}){videojuegos[i]["nombre"]}")
-    
-    juegoElegido = int(input("selecione un juego: "))
-    while juegoElegido <1 or juegoElegido >len(videojuegos)-1:
-        print("ingreso invalido")
-        juegoElegido = int(input("selecione un juego: "))
-    
-    datosJuego(juegoElegido)
-    
-    return juegoElegido
+    try:
+        print("estos son los juegos disponibles en nuestra biblioteca, presione cualquiera para conocer su infomracion")
+        for i in range(len(videojuegos)):
+            print(f"{i}){videojuegos[i]['nombre']}")
+        
+        try:
+            juegoElegido = int(input("selecione un juego: "))
+        except ValueError:
+            print("Por favor ingrese un número válido")
+            return False
+            
+        if juegoElegido < 0 or juegoElegido > len(videojuegos)-1:
+            print("ingreso invalido")
+            return False
+        
+        datosJuego(juegoElegido)
+        return juegoElegido
+    except Exception as e:
+        print("Error al mostrar juegos:", e)
+        return False
 
 def datosJuego(id):
     
@@ -324,7 +332,7 @@ def reembolsarJuego(usuarioActivo):
 def buscarUsuario():
     ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
     while ingreso !=-1:
-        usuarioABuscar=input("ingrese el nombre del producto a buscar:")
+        usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
         coincidencia=False
         indice=None
         
@@ -367,45 +375,62 @@ def cambiarPassword(usuarioActivo):
         usuarios[usuarioActivo]["password"] = nueva
 
 def cambiarNombreUsuario(usuarioActivo):
-    usuario = input("nombre de usuario: ")
-    nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
+    try:
+        usuario = input("nombre de usuario: ")
+        if usuario == "":
+            print("El nombre de usuario no puede estar vacío")
+            
+            
+        nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
 
-    if usuario in nombresUsuarios:
-        print("usuario repetido")
-    else:   
-        usuarios[usuarioActivo]["user"] = usuario
+        if usuario in nombresUsuarios:
+            print("usuario repetido")
+            return False
+        else:   
+            usuarios[usuarioActivo]["user"] = usuario
+            print("Nombre de usuario actualizado exitosamente")
+            return True
+    except Exception as e:
+        print("Error al cambiar nombre de usuario:", e)
 
 def menu_usuario(usuarioActivo):
     flag = True
     while flag:
-        print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion")
-        opcion = int(input("¿Qué desea seleccionar?: "))
-        while opcion not in [1,2,3,4,5,6,7]:
-            print("No es válido, intente otra vez")
-            opcion = int(input("¿Qué desea seleccionar?: "))
-        if opcion == 1:
-            cargaSaldo(usuarioActivo)
-        elif opcion == 2:
-            comprarJuegos(usuarioActivo)
-        elif opcion == 3:
-            reembolsarJuego(usuarioActivo)
-        elif opcion == 4:
-            enviarNotificacion(usuarioActivo, "amistad")
-        elif opcion == 5:
-            enviarNotificacion(usuarioActivo, "biblioteca")
-        elif opcion == 6:
-            verNotificaciones(usuarioActivo)
-        else:
-            print("Usted cerró sesión")
-            flag = False
-        print("--------------------------")
+        try:
+            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion")
+            try:
+                opcion = int(input("¿Qué desea seleccionar?: "))
+            except ValueError:
+                print("Por favor ingrese un número válido")
+            while opcion not in [1,2,3,4,5,6,7]:
+                print("No es válido, intente otra vez")
+                opcion = int(input("¿Qué desea seleccionar?: "))
+            if opcion == 1:
+                cargaSaldo(usuarioActivo)
+            elif opcion == 2:
+                comprarJuegos(usuarioActivo)
+            elif opcion == 3:
+                reembolsarJuego(usuarioActivo)
+            elif opcion == 4:
+                enviarNotificacion(usuarioActivo, "amistad")
+            elif opcion == 5:
+                enviarNotificacion(usuarioActivo, "biblioteca")
+            elif opcion == 6:
+                verNotificaciones(usuarioActivo)
+            else:
+                print("Usted cerró sesión")
+                flag = False
+            print("--------------------------")
+        except Exception as e:
+            print("Error en el menú:", e)
+    
 
 def menu_principal():
     print("Bienvenid@ a InsertCoin")
     flag = True
     while flag:
         print("--------------------------")
-        print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Salir")
+        print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Administrador\n4-Salir")
         opcion = int(input("¿Qué desea seleccionar?: "))
         while opcion not in [1,2,3]:
             print("Opción no válida, intente otra vez")
@@ -419,10 +444,38 @@ def menu_principal():
             usuarioActivo = iniciarSesion()
             if usuarioActivo is not None:
                 menu_usuario(usuarioActivo)
+        elif opcion ==3:
+            clave = input("Ingrese la clave de administrador: ")
+            if clave == "adminadmin":
+                administrador()
+            else:
+                print("Contraseña incorrecta.")
         else:
             print("¡Gracias por usar InsertCoin!")
             guardarDatos()
             flag = False
+
+def administrador():
+    flag = True
+    while flag:
+        print("--------------------------")
+        try:
+            print("1-Buscar usuarios\n2-Eliminar usuario\n3-Cerrar sesion")
+            opcion = int(input ("¿Qué desea seleccionar?:"))
+        except ValueError:
+            print("ValueError, valor no valido")
+        while opcion not in [1,2,3]:
+            print("No es válido, intente otra vez")
+            opcion = int(input("¿Qué desea seleccionar?: "))
+        if opcion ==1:
+            buscarUsuario()
+        elif opcion ==2:
+            eliminarUsuarios()
+        else:
+            print ("Cerraste sesion")
+            flag = False
+        
+
 
 def main():
     global usuarios,videojuegos
