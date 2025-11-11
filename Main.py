@@ -394,29 +394,46 @@ def cambiarNombreUsuario(usuarioActivo):
         print("Error al cambiar nombre de usuario:", e)
 
 def menu_usuario(usuarioActivo):
+    global usuarios
     flag = True
     while flag:
         try:
-            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cerrar sesion")
+            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cambiar Nombre De Usuario\n8-Cerrar sesion")
             try:
                 opcion = int(input("¿Qué desea seleccionar?: "))
             except ValueError:
                 print("Por favor ingrese un número válido")
-            while opcion not in [1,2,3,4,5,6,7]:
+            while opcion not in [1,2,3,4,5,6,7,8]:
                 print("No es válido, intente otra vez")
                 opcion = int(input("¿Qué desea seleccionar?: "))
             if opcion == 1:
+                list(usuarios)
                 cargaSaldo(usuarioActivo)
+                tuple(usuarios)
             elif opcion == 2:
+                list(usuarios)
                 comprarJuegos(usuarioActivo)
+                tuple(usuarios)
             elif opcion == 3:
+                list(usuarios)
                 reembolsarJuego(usuarioActivo)
+                tuple(usuarios)
             elif opcion == 4:
+                list(usuarios)
                 enviarNotificacion(usuarioActivo, "amistad")
+                tuple(usuarios)
             elif opcion == 5:
+                list(usuarios)
                 enviarNotificacion(usuarioActivo, "biblioteca")
+                tuple(usuarios)
             elif opcion == 6:
+                list(usuarios)
                 verNotificaciones(usuarioActivo)
+                tuple(usuarios)
+            elif opcion == 7:
+                list(usuarios)
+                cambiarNombreUsuario(usuarioActivo)
+                tuple(usuarios)
             else:
                 print("Usted cerró sesión")
                 flag = False
@@ -426,6 +443,7 @@ def menu_usuario(usuarioActivo):
     
 
 def menu_principal():
+    global usuarios
     print("Bienvenid@ a InsertCoin")
     flag = True
     while flag:
@@ -436,10 +454,13 @@ def menu_principal():
             print("Opción no válida, intente otra vez")
             opcion = int(input("¿Qué desea seleccionar?: "))
         if opcion == 1:
+            list(usuarios)
             crearUsuario()
+            tuple(usuarios)
             usuarioActivo = iniciarSesion()
             if usuarioActivo is not None:
                 menu_usuario(usuarioActivo)
+            
         elif opcion == 2:
             usuarioActivo = iniciarSesion()
             if usuarioActivo is not None:
@@ -456,6 +477,7 @@ def menu_principal():
             flag = False
 
 def administrador():
+    global usuarios
     flag = True
     while flag:
         print("--------------------------")
@@ -470,7 +492,9 @@ def administrador():
         if opcion ==1:
             buscarUsuario()
         elif opcion ==2:
+            list(usuarios)
             eliminarUsuarios()
+            tuple(usuarios)
         else:
             print ("Cerraste sesion")
             flag = False
@@ -480,6 +504,8 @@ def administrador():
 def main():
     global usuarios,videojuegos
     usuarios,videojuegos = cargarDatos()
+    usuarios = tuple(usuarios)
+    videojuegos = tuple(videojuegos)
     menu_principal()
 
 main()
