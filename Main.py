@@ -42,7 +42,7 @@ def guardarDatos():
     except Exception as e:
         print("Ocurrió un error al guardar los datos:", e)
 
-def crearUsuario():
+def crearUsuario(): # Crea un nuevo usuario, validando que el nombre no esté repetido.
     try:
         if len(usuarios)==0:
             id = 0
@@ -89,7 +89,7 @@ def crearUsuario():
 
     print("usario creado con exito")
 
-def mostrarJuegos():
+def mostrarJuegos(): # Muestra la lista de videojuegos y permite al usuario seleccionar uno.
     try:
         print("estos son los juegos disponibles en nuestra biblioteca, presione cualquiera para conocer su infomracion")
         for i in range(len(videojuegos)):
@@ -111,7 +111,7 @@ def mostrarJuegos():
         print("Error inesperado al mostrar juegos:", e)
         return False
     
-def verPerfilUsuario(usuarioActivo):
+def verPerfilUsuario(usuarioActivo): # Muestra el perfil del usuario activo, incluyendo amigos y juegos.
 
     usuario = usuarios[usuarioActivo]
 
@@ -143,7 +143,7 @@ def verPerfilUsuario(usuarioActivo):
           sum(1 for n in usuario["notificaciones"] if not n["visto"]))
     print("==============================\n")
 
-def datosJuego(id):
+def datosJuego(id): # Imprime en pantalla los detalles de un videojuego específico.
     #informacion de juegos
     print(f"Nombre: {videojuegos[id]["nombre"]}")
     print(f"Desarrollador: {videojuegos[id]["compania"]}")
@@ -152,7 +152,7 @@ def datosJuego(id):
     print(f"Trofeos Totales: {videojuegos[id]["trofeos_totales"]}")
     print(f"Durecion: {videojuegos[id]["duracion_horas"]}")
 
-def cargaSaldo (usuarioActivo):
+def cargaSaldo (usuarioActivo): # Gestiona la carga de saldo en la cuenta de un usuario.
     try:
 
         patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$') #expresion regular para validar tarjeta 
@@ -237,7 +237,7 @@ def iniciarSesion():#se solicita los datos y se chequean que existan
         
     return usuarioActivo
 
-def comprarJuegos(usuarioActivo):
+def comprarJuegos(usuarioActivo): # Proceso para que un usuario compre un juego, con opción a usar códigos de descuento.
    
     try:
         flag = 0
@@ -287,7 +287,7 @@ def comprarJuegos(usuarioActivo):
         print("Error inesperado al comprar juegos:", e)
 
 
-def crearNotificacion(activo,destino,tipo):
+def crearNotificacion(activo,destino,tipo): # Crea una notificación para un usuario.
     
     if tipo == "amistad":
         mensaje =f"{usuarios[activo]["user"]} te ha enviado una solicitud de amistad"
@@ -304,7 +304,7 @@ def crearNotificacion(activo,destino,tipo):
     }
     usuarios[destino]["notificaciones"].append(notificacion)
 
-def verNotificaciones(usuarioActivo):
+def verNotificaciones(usuarioActivo): # Muestra y gestiona las notificaciones no vistas del usuario.
     notificacionesNoVistas = list(filter(lambda x: x["visto"] == False, usuarios[usuarioActivo]["notificaciones"]))
 
     for notificacion in notificacionesNoVistas:
@@ -335,7 +335,7 @@ def verNotificaciones(usuarioActivo):
 
 
 
-def enviarNotificacion(activo,tipo):
+def enviarNotificacion(activo,tipo): # Busca un usuario y le envía una notificación.
     busqueda = input("a que usuario desea enviar la notificacion?")
     usuarioRemitente = list(filter(lambda x : x["user"]== busqueda,usuarios))
     
@@ -344,7 +344,7 @@ def enviarNotificacion(activo,tipo):
     else:
         print("usuario no encontrado")
 
-def reembolsarJuego(usuarioActivo):
+def reembolsarJuego(usuarioActivo): # Permite a un usuario reembolsar un juego si no han pasado más de 3 días desde la compra.
     try:
         if not usuarios[usuarioActivo]["juegos"]:
             print("No tenés juegos comprados para reembolsar.")
@@ -381,7 +381,7 @@ def reembolsarJuego(usuarioActivo):
         print("Error inesperado al reembolsar juego:", e)
 
 #funciones para usuario admin
-def buscarUsuario():
+def buscarUsuario(): # Función de administrador para buscar un usuario por su nombre.
     try:
         ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
         while ingreso !=-1:
@@ -407,7 +407,7 @@ def buscarUsuario():
     return usuario
 
 
-def eliminarUsuarios():
+def eliminarUsuarios(): # Función de administrador para eliminar un usuario.
     try:
         usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
         coincidencia=False
@@ -480,7 +480,7 @@ def agregarJuegoAUsuario():
     except Exception as e:
         print("Error inesperado al agregar juego a usuario:", e)
 
-def cambiarPassword(usuarioActivo):
+def cambiarPassword(usuarioActivo): # Permite al usuario activo cambiar su contraseña.
     try:
         nueva = input("Nueva contraseña (mínimo 8): ")
         repetir = input("Repetir contraseña: ")
@@ -492,7 +492,7 @@ def cambiarPassword(usuarioActivo):
     except Exception as e:
         print("Error al cambiar contraseña:", e)
 
-def cambiarNombreUsuario(usuarioActivo):
+def cambiarNombreUsuario(usuarioActivo): # Permite al usuario activo cambiar su nombre de usuario.
     try:
         usuario = input("nombre de usuario: ")
         if usuario == "":#validacion basica
@@ -604,7 +604,7 @@ def menu_principal():#menu visual
             print("Error en el menú:", e)
 
 
-def administrador():#menu visual 
+def administrador():# Menú de opciones para el administrador.
     global usuarios
     flag = True
     while flag:
