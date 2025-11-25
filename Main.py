@@ -208,7 +208,7 @@ def cargaSaldo (usuarioActivo):
     except Exception as e:
         print("Error inesperado al cargar saldo:", e)
 
-def iniciarSesion():
+def iniciarSesion():#se solicita los datos y se chequean que existan 
     try:
         print("inicio de Sesion: ")
         usuarioIngresado = input("ingrese su usuario: ")
@@ -571,58 +571,65 @@ def menu_principal():#menu visual
     print("Bienvenid@ a InsertCoin")
     flag = True
     while flag:
-        print("--------------------------")
-        print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Administrador\n4-Salir")
-        opcion = int(input("¿Qué desea seleccionar?: "))
-        while opcion not in [1,2,3,4]:
-            print("Opción no válida, intente otra vez")
+        try:
+            print("--------------------------")
+            print("1-Crear un nuevo usuario\n2-Iniciar sesión\n3-Administrador\n4-Salir")
             opcion = int(input("¿Qué desea seleccionar?: "))
-        if opcion == 1:
-            usuarios = list(usuarios)
-            crearUsuario()
-            usuarios = tuple(usuarios)
-            usuarioActivo = iniciarSesion()
-            if usuarioActivo is not None:
-                menu_usuario(usuarioActivo)
-            
-        elif opcion == 2:
-            usuarioActivo = iniciarSesion()
-            if usuarioActivo is not None:
-                menu_usuario(usuarioActivo)
-        elif opcion ==3:
-            clave = input("Ingrese la clave de administrador: ")
-            if clave == "adminadmin":
-                administrador()
+            while opcion not in [1,2,3,4]:
+                print("Opción no válida, intente otra vez")
+                opcion = int(input("¿Qué desea seleccionar?: "))
+            if opcion == 1:
+                usuarios = list(usuarios)
+                crearUsuario()
+                usuarios = tuple(usuarios)
+                usuarioActivo = iniciarSesion()
+                if usuarioActivo is not None:
+                    menu_usuario(usuarioActivo)
+                
+            elif opcion == 2:
+                usuarioActivo = iniciarSesion()
+                if usuarioActivo is not None:
+                    menu_usuario(usuarioActivo)
+            elif opcion ==3:
+                clave = input("Ingrese la clave de administrador: ")
+                if clave == "adminadmin":
+                    administrador()
+                else:
+                    print("Contraseña incorrecta.")
             else:
-                print("Contraseña incorrecta.")
-        else:
-            print("¡Gracias por usar InsertCoin!")
-            guardarDatos()
-            flag = False
+                print("¡Gracias por usar InsertCoin!")
+                guardarDatos()
+                flag = False
+        except Exception as e:
+            print("Error en el menú:", e)
+
 
 def administrador():#menu visual 
     global usuarios
     flag = True
     while flag:
-        print("--------------------------")
         try:
-            print("1-Buscar usuarios\n2-Eliminar usuario\n3-Cerrar sesion")
-            opcion = int(input ("¿Qué desea seleccionar?:"))
-        except ValueError:
-            print("ValueError, valor no valido")
-        while opcion not in [1,2,3]:
-            print("No es válido, intente otra vez")
-            opcion = int(input("¿Qué desea seleccionar?: "))
-        if opcion ==1:
-            buscarUsuario()
-        elif opcion ==2:
-            usuarios = list(usuarios)
-            eliminarUsuarios()
-            usuarios = tuple(usuarios)
-        else:
-            print ("Cerraste sesion")
-            flag = False
-        
+            print("--------------------------")
+            try:
+                print("1-Buscar usuarios\n2-Eliminar usuario\n3-Cerrar sesion")
+                opcion = int(input ("¿Qué desea seleccionar?:"))
+            except ValueError:
+                print("ValueError, valor no valido")
+            while opcion not in [1,2,3]:
+                print("No es válido, intente otra vez")
+                opcion = int(input("¿Qué desea seleccionar?: "))
+            if opcion ==1:
+                buscarUsuario()
+            elif opcion ==2:
+                usuarios = list(usuarios)
+                eliminarUsuarios()
+                usuarios = tuple(usuarios)
+            else:
+                print ("Cerraste sesion")
+                flag = False
+        except Exception as e:
+            print("Error en el menú:", e)
+
 
 
 def main():
