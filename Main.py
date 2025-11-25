@@ -399,6 +399,32 @@ def eliminarUsuarios():
     else:
         print("usuario no encontrado")
 
+def agregarJuegosAbiblioteca():
+    juego=input("ingrese el nombre del juego que desea agregar a la biblioteca: ")
+    if juego not in videojuegos:
+        videojuegos.append(juego)
+        {
+            "id": len(videojuegos),
+            "nombre": juego,
+            "comania": input("ingrese la compañia del juego: "),
+            "precio": float(input("ingrese el precio del juego: ")),
+            "trofeos_totales": int(input("ingrese la cantidad de trofeos totales del juego: ")),
+            "descripcion": input("ingrese la descripcion del juego: "),
+            "duracion_horas": int(input("ingrese la duracion en horas del juego: "))
+            
+        }
+    else:
+        print("ese juego ya se encuentra en la biblioteca")
+
+def agregarJuegoAUsuario(usuarios):#agregar el append a la lista de diccionarios 
+    juego=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
+    if juego in videojuegos and juego not in usuarios["juegos"]:
+        usuarios.append(juego["juegos"])
+        
+    else:
+        print("ese juego no puede ser regalado a ese usuario :(")
+
+
 def cambiarPassword(usuarioActivo):
     nueva = input("Nueva contraseña (mínimo 8): ")
     repetir = input("Repetir contraseña: ")
