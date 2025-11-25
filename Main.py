@@ -105,6 +105,37 @@ def mostrarJuegos():
     except Exception as e:
         print("Error al mostrar juegos:", e)
         return False
+    
+def verPerfilUsuario(usuarioActivo):
+    usuario = usuarios[usuarioActivo]
+
+    print("\n===== PERFIL DEL USUARIO =====")
+    print("Nombre de usuario:", usuario["user"])
+    print("Saldo:", usuario["saldo"])
+
+    print("\nAmigos:")
+    if len(usuario["amigos"]) == 0:
+        print("  No tenés amigos agregados.")
+    else:
+        for amigo in usuario["amigos"]:
+            print(" -", amigo)
+
+    # Mostrar biblioteca correcta (compartida o normal)
+    print("\nJuegos disponibles:")
+    if usuario["juegosBiblioteca"] is not None:
+        print("  (Biblioteca compartida activa)")
+        for juego in usuario["juegosBiblioteca"]:
+            print(" -", juego["nombre"])
+    else:
+        if len(usuario["juegos"]) == 0:
+            print("  No tenés juegos.")
+        else:
+            for juego in usuario["juegos"]:
+                print(" -", juego)
+
+    print("\nNotificaciones pendientes:", 
+          sum(1 for n in usuario["notificaciones"] if not n["visto"]))
+    print("==============================\n")
 
 def datosJuego(id):
     #informacion de juegos
@@ -401,12 +432,12 @@ def menu_usuario(usuarioActivo):#menu visual
     flag = True
     while flag:
         try:
-            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cambiar Nombre De Usuario\n8-Cerrar sesion")
+            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cambiar Nombre De Usuario\n8-Cambiar password\n9-Ver Datos\n10- Cerrar Cesion")
             try:
                 opcion = int(input("¿Qué desea seleccionar?: "))
             except ValueError:
                 print("Por favor ingrese un número válido")
-            while opcion not in [1,2,3,4,5,6,7,8]:
+            while opcion not in [1,2,3,4,5,6,7,8,9,10]:
                 print("No es válido, intente otra vez")
                 opcion = int(input("¿Qué desea seleccionar?: "))
             if opcion == 1:
@@ -437,6 +468,12 @@ def menu_usuario(usuarioActivo):#menu visual
                 usuarios = list(usuarios)
                 cambiarNombreUsuario(usuarioActivo)
                 usuarios = tuple(usuarios)
+            elif opcion == 8:
+                usuarios = list(usuarios)
+                cambiarPassword(usuarioActivo)
+                usuarios = tuple(usuarios)
+            elif opcion == 9:
+                verPerfilUsuario(usuarioActivo)
             else:
                 print("Usted cerró sesión")
                 flag = False
@@ -512,5 +549,4 @@ def main():
     menu_principal()
 
 main()
-
 
