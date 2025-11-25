@@ -80,6 +80,7 @@ def crearUsuario(): # Crea un nuevo usuario, validando que el nombre no esté re
         "user":usuario,
         "password":password,
         "amigos":amigos,
+        "juegosBiblioteca": [],
         "juegos":juegos,
         "saldo": 0,
         "notificaciones": notificaciones,
@@ -128,7 +129,7 @@ def verPerfilUsuario(usuarioActivo): # Muestra el perfil del usuario activo, inc
 
     # Mostrar biblioteca correcta (compartida o normal)
     print("\nJuegos disponibles:")
-    if usuario["juegosBiblioteca"] is not None:
+    if len(usuario["juegosBiblioteca"]) !=0:
         print("  (Biblioteca compartida activa)")
         for juego in usuario["juegosBiblioteca"]:
             print(" -", juego["nombre"])
@@ -329,9 +330,9 @@ def verNotificaciones(usuarioActivo): # Muestra y gestiona las notificaciones no
                 usuarios[usuarioActivo]["juegosBiblioteca"] = juegosFusionadosClear
                 usuarios[indiceRemitente]["juegosBiblioteca"] = juegosFusionadosClear
                 print("Bibliotecas de", usuarios[usuarioActivo]['user'], "y", usuarios[indiceRemitente]['user'], "fusionadas.")
-        else:
+        
             
-            notificacion["visto"] = True
+        notificacion["visto"] = True
 
 
 
@@ -383,8 +384,7 @@ def reembolsarJuego(usuarioActivo): # Permite a un usuario reembolsar un juego s
 #funciones para usuario admin
 def buscarUsuario(): # Función de administrador para buscar un usuario por su nombre.
     try:
-        ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
-        while ingreso !=-1:
+        
             usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
             coincidencia=False
             indice=None
@@ -396,11 +396,11 @@ def buscarUsuario(): # Función de administrador para buscar un usuario por su n
                     indice=i
                     usuario=usuarios[i]["user"]
 
-                    if coincidencia==True:
-                        print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
+            if coincidencia==True:
+                print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
                         
-                else:
-                    print("usuario no encontrado")
+            else:
+                print("usuario no encontrado")
     except Exception as e:
         print("Error inesperado al buscar usuario:", e)
     
@@ -430,6 +430,8 @@ def eliminarUsuarios(): # Función de administrador para eliminar un usuario.
 
 def agregarJuegosAbiblioteca():
     try:
+        coincidenciaJuego=False
+        indice=None
         juego=input("ingrese el nombre del juego que desea agregar a la biblioteca: ")
         for i in range(len(videojuegos)):
             if juego == videojuegos[i]["nombre"]:
@@ -458,21 +460,22 @@ def agregarJuegoAUsuario():
         usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
         coincidenciaUsuario=False
         indice=None
+        indiceJuego = None
 
         for i in range(len(usuarios)):
             if usuarioABuscar==usuarios[i]["user"]:
                 coincidenciaUsuario= True
                 indice=i
-                usuario=usuarios[i]["user"]
+                #usuario=usuarios[i]["user"]
 
         juegoABuscar=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
         for i in range(len(videojuegos)):
             if juegoABuscar == videojuegos[i]["nombre"]:
                 coincidenciaJuego= True
-                indice=i
+                indiceJuego=i
 
-        if coincidenciaJuego==True and juegoABuscar not in usuario["juegos"]:
-            usuarios.append(juegoABuscar["juegos"])
+        if coincidenciaJuego==True and juegoABuscar not in usuarios[indice]["juegos"]:
+            usuarios[indice]["juegos"].append(videojuegos[indiceJuego])
 
         else:
             print("ese juego no puede ser regalado a ese usuario :(")
@@ -515,8 +518,10 @@ def menu_usuario(usuarioActivo):#menu visual
     global usuarios
     flag = True
     while flag:
+        notSinVer = [notificacion for notificacion in usuarios[usuarioActivo]["notificaciones"]if notificacion["visto"] == False]
+        mensaje = "Ver notificaciones" if len(notSinVer) == 0 else f"Ver Notificaciones({len(notSinVer)} sin ver)"
         try:
-            print("1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-Ver notificaciones\n7-Cambiar Nombre De Usuario\n8-Cambiar password\n9-Ver Datos\n10- Cerrar Cesion")
+            print(f"1-Cargar Saldo\n2-Comprar juegos\n3-Rembolso\n4-Enviar solicitud de amistad\n5-Solicitud de biblioteca compartida\n6-{mensaje}\n7-Cambiar Nombre De Usuario\n8-Cambiar password\n9-Ver Datos\n10- Cerrar Cesion")
             try:
                 opcion = int(input("¿Qué desea seleccionar?: "))
             except ValueError:
@@ -563,7 +568,7 @@ def menu_usuario(usuarioActivo):#menu visual
                 flag = False
             print("--------------------------")
         except Exception as e:
-            print("Error en el menú:", e)
+            print("Error en el menú por ingreso invalido:", e)
     
 
 def menu_principal():#menu visual 
@@ -605,17 +610,17 @@ def menu_principal():#menu visual
 
 
 def administrador():# Menú de opciones para el administrador.
-    global usuarios
+    global usuarios,videojuegos
     flag = True
     while flag:
         try:
             print("--------------------------")
             try:
-                print("1-Buscar usuarios\n2-Eliminar usuario\n3-Cerrar sesion")
+                print("1-Buscar usuarios\n2-Eliminar usuario\n3-Agregar un juego a un usuario\n4-Agregar un juego a la biblioteca\n5-Cerrar Cesion")
                 opcion = int(input ("¿Qué desea seleccionar?:"))
             except ValueError:
                 print("ValueError, valor no valido")
-            while opcion not in [1,2,3]:
+            while opcion not in [1,2,3,4,5]:
                 print("No es válido, intente otra vez")
                 opcion = int(input("¿Qué desea seleccionar?: "))
             if opcion ==1:
@@ -624,6 +629,16 @@ def administrador():# Menú de opciones para el administrador.
                 usuarios = list(usuarios)
                 eliminarUsuarios()
                 usuarios = tuple(usuarios)
+            elif opcion ==3:
+                usuarios = list(usuarios)
+                agregarJuegoAUsuario()
+                usuarios = tuple(usuarios)
+            elif opcion ==4:
+                usuarios = list(usuarios)
+                videojuegos = list(videojuegos)
+                agregarJuegosAbiblioteca()
+                usuarios = tuple(usuarios)
+                videojuegos = tuple(videojuegos)
             else:
                 print ("Cerraste sesion")
                 flag = False
@@ -640,4 +655,3 @@ def main():
     menu_principal()
 
 main()
-
