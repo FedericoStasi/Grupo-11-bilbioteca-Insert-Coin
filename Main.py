@@ -23,7 +23,7 @@ def cargarDatos():
             return usuariosObtenidos, videojuegosObtenidos
         
     except Exception as e:
-        print("error", e) 
+        print("ocurrio un error inesperado al cargar los datos", e) 
 
 
 def guardarDatos():
@@ -43,18 +43,23 @@ def guardarDatos():
         print("Ocurrió un error al guardar los datos:", e)
 
 def crearUsuario():
-    if len(usuarios)==0:
-        id = 0
-    else:
-        idMaximo = usuarios[-1]["id"]
-        id = idMaximo+1
+    try:
+        if len(usuarios)==0:
+            id = 0
+        else:
+            idMaximo = usuarios[-1]["id"]
+            id = idMaximo+1
 
-    usuario = input("nombre de usuario: ")
-    nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
-
-    while usuario in nombresUsuarios:
-        print("usuario repetido")#valida que el usuario no exista, mediante la lista de comprension de la linea 53
         usuario = input("nombre de usuario: ")
+        nombresUsuarios = [usuarios[i]["user"] for i in range(len(usuarios))]
+
+        while usuario in nombresUsuarios:
+            print("usuario repetido")#valida que el usuario no exista, mediante la lista de comprension de la linea 53
+            usuario = input("nombre de usuario: ")
+
+    except Exception as e:
+        print("Error al crear usuario:", e)
+        
 
 
 
@@ -103,10 +108,11 @@ def mostrarJuegos():
         datosJuego(juegoElegido)
         return juegoElegido
     except Exception as e:
-        print("Error al mostrar juegos:", e)
+        print("Error inesperado al mostrar juegos:", e)
         return False
     
 def verPerfilUsuario(usuarioActivo):
+
     usuario = usuarios[usuarioActivo]
 
     print("\n===== PERFIL DEL USUARIO =====")
@@ -147,128 +153,138 @@ def datosJuego(id):
     print(f"Durecion: {videojuegos[id]["duracion_horas"]}")
 
 def cargaSaldo (usuarioActivo):
-    patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$') #expresion regular para validar tarjeta 
+    try:
 
-    
-    flag = True
-    while flag :
-        cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
-        while cuanto_saldo < 0 or cuanto_saldo == 0:#valida numeros logicos
-            print("No es posible ingrese una cantidad mayor a u$d 0")
-            cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
-        medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
-        while medio_pago <1 or medio_pago > 3:#valida opciones logicas
-            print("Seleccion no valida intente otra vez")
-            medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado Pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
-
-        if medio_pago == 1:
-            print("El alias es: insertcoin.mp")
-            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")   
-            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
-            flag = False
+        patron = re.compile(r'^(?:\d{4}[- ]?){3}\d{4}$') #expresion regular para validar tarjeta 
 
         
-        elif medio_pago == 2:
+        flag = True
+        while flag :
+            cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
+            while cuanto_saldo < 0 or cuanto_saldo == 0:#valida numeros logicos
+                print("No es posible ingrese una cantidad mayor a u$d 0")
+                cuanto_saldo = float (input ("Cuanto dinero quiere ingresar? U$D: "))
+            medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
+            while medio_pago <1 or medio_pago > 3:#valida opciones logicas
+                print("Seleccion no valida intente otra vez")
+                medio_pago = int (input("Que medio de pago desea elegir para finalizar su compra? 1-Mercado Pago, 2-Tarjeta de credito, 3-tarjeta de debito: "))
 
-            tarjetaCredito = input("Ingrese su tarjeta de credito: ")
-            while bool(patron.fullmatch(tarjetaCredito)) == False: #valida la expresion regular de la linea 119
-                print("No es valido")
+            if medio_pago == 1:
+                print("El alias es: insertcoin.mp")
+                print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")   
+                usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+                flag = False
+
+            
+            elif medio_pago == 2:
+
                 tarjetaCredito = input("Ingrese su tarjeta de credito: ")
-            cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999:#valida 3 numeros de codigo de seguridad 
-                print ("No es valido")
+                while bool(patron.fullmatch(tarjetaCredito)) == False: #valida la expresion regular de la linea 119
+                    print("No es valido")
+                    tarjetaCredito = input("Ingrese su tarjeta de credito: ")
                 cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
-            print ("Su compra ah sido exitosa")
-            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
-            flag = False
+                while cvv < 100 or cvv >999:#valida 3 numeros de codigo de seguridad 
+                    print ("No es valido")
+                    cvv = int(input("Ingrese el codigo de seguridad: ")) 
+                usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+                print ("Su compra ah sido exitosa")
+                print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
+                flag = False
 
-        else:
+            else:
 
-            tarjetaDedito = (input("Ingrese su tarjeta de credito: "))
-            while bool(patron.fullmatch(tarjetaDedito)) == False: #valida la expresion regular de la linea 119
-                print("no es valido")
-                tarjetaDedito = input("Ingrese su tarjeta de credito: ")
-            cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            while cvv < 100 or cvv >999: #valida codigo de seguridad
-                print ("No es valido")
+                tarjetaDedito = (input("Ingrese su tarjeta de credito: "))
+                while bool(patron.fullmatch(tarjetaDedito)) == False: #valida la expresion regular de la linea 119
+                    print("no es valido")
+                    tarjetaDedito = input("Ingrese su tarjeta de credito: ")
                 cvv = int(input("Ingrese el codigo de seguridad: ")) 
-            usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
-            print ("Su compra ah sido exitosa")
-            print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
-            flag = False
+                while cvv < 100 or cvv >999: #valida codigo de seguridad
+                    print ("No es valido")
+                    cvv = int(input("Ingrese el codigo de seguridad: ")) 
+                usuarios[usuarioActivo]["saldo"]+=cuanto_saldo  
+                print ("Su compra ah sido exitosa")
+                print(f"Se le acredito U$D {cuanto_saldo}, numero de orden {random.randint(0,100000)}")
+                flag = False
+    except Exception as e:
+        print("Error inesperado al cargar saldo:", e)
 
 def iniciarSesion():
+    try:
+        print("inicio de Sesion: ")
+        usuarioIngresado = input("ingrese su usuario: ")
+        contraseñaIngresada = input("ingrese su contraseña: ")
+        
+        usuarioActivo= 0 
+        coincidencia = False
+        indice = len(usuarios)
 
-    print("inicio de Sesion: ")
-    usuarioIngresado = input("ingrese su usuario: ")
-    contraseñaIngresada = input("ingrese su contraseña: ")
+        for i in range (indice):
+            if usuarioIngresado == usuarios[i]["user"]:
+                if contraseñaIngresada == usuarios[i]["password"]:
+                    usuarioActivo = i
+                    coincidencia = True
+        
+        if coincidencia == True:
+            print(f"bienvenido {usuarios[usuarioActivo]["user"]} ")
+
+        else:
+            print("alguno de los datos es incorrecto")
+            usuarioActivo = None
     
-    usuarioActivo= 0 
-    coincidencia = False
-    indice = len(usuarios)
-
-    for i in range (indice):
-        if usuarioIngresado == usuarios[i]["user"]:
-            if contraseñaIngresada == usuarios[i]["password"]:
-                usuarioActivo = i
-                coincidencia = True
-    
-    if coincidencia == True:
-        print(f"bienvenido {usuarios[usuarioActivo]["user"]} ")
-
-    else:
-        print("alguno de los datos es incorrecto")
+    except Exception as e:
+        print("Error inesperado al iniciar sesión:", e)
         usuarioActivo = None
-    
+        
     return usuarioActivo
 
 def comprarJuegos(usuarioActivo):
    
+    try:
+        flag = 0
+        while flag != 1:
+            juegoElegido = mostrarJuegos()
 
-    flag = 0
-    while flag != 1:
-        juegoElegido = mostrarJuegos()
-
-        confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
-        while confirmacion not in [1, 2, 3]:#valida el rango propuesto
-            print("Seleccione una opción válida")
             confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
+            while confirmacion not in [1, 2, 3]:#valida el rango propuesto
+                print("Seleccione una opción válida")
+                confirmacion = int(input("Ingrese 1 para comprar, 2 para volver a ver la lista, 3 para salir: "))
 
-        if confirmacion == 1:
-            print("Aguarde un momento, chequeando su saldo")
-            precio = videojuegos[juegoElegido]["precio"]
+            if confirmacion == 1:
+                print("Aguarde un momento, chequeando su saldo")
+                precio = videojuegos[juegoElegido]["precio"]
 
-            usar_codigo = input("¿Tiene un código de descuento? (s/n): ").lower()
-            if usar_codigo == "s":
-                codigo = input("Ingrese el código: ").upper()
-                if codigo in codigos_descuento:
-                    descuento = codigos_descuento[codigo]#valida  si existe el codigo de descuento 
-                    precio_final = round(precio * (1 - descuento), 2)
-                    print(f"Código válido. Precio con descuento: {precio_final}")
+                usar_codigo = input("¿Tiene un código de descuento? (s/n): ").lower()
+                if usar_codigo == "s":
+                    codigo = input("Ingrese el código: ").upper()
+                    if codigo in codigos_descuento:
+                        descuento = codigos_descuento[codigo]#valida  si existe el codigo de descuento 
+                        precio_final = round(precio * (1 - descuento), 2)
+                        print(f"Código válido. Precio con descuento: {precio_final}")
+                    else:
+                        print("Código inválido. Se aplicará el precio normal")
+                        precio_final = precio
                 else:
-                    print("Código inválido. Se aplicará el precio normal")
                     precio_final = precio
-            else:
-                precio_final = precio
 
-            if usuarios[usuarioActivo]["saldo"] >= precio_final:
-                print("Felicitaciones, compraste un juego")
-                juego = videojuegos[juegoElegido].copy()
-                juego["precioPagado"] = precio_final
-                juego["fechaCompra"] = time.strftime("%Y-%m-%d")#mediante libreria time guarda el tiempo de compra 
-                usuarios[usuarioActivo]["juegos"].append(juego)
-                usuarios[usuarioActivo]["saldo"] -= precio_final #descuenta el preciodel juego
+                if usuarios[usuarioActivo]["saldo"] >= precio_final:
+                    print("Felicitaciones, compraste un juego")
+                    juego = videojuegos[juegoElegido].copy()
+                    juego["precioPagado"] = precio_final
+                    juego["fechaCompra"] = time.strftime("%Y-%m-%d")#mediante libreria time guarda el tiempo de compra 
+                    usuarios[usuarioActivo]["juegos"].append(juego)
+                    usuarios[usuarioActivo]["saldo"] -= precio_final #descuenta el preciodel juego
+                    flag = 1
+                else:
+                    print("Lo sentimos, su saldo no es suficiente")
+
+            elif confirmacion == 2:
+                print("Volviendo a la lista de juegos")
+
+            else:
+                print("Saliendo")
                 flag = 1
-            else:
-                print("Lo sentimos, su saldo no es suficiente")
-
-        elif confirmacion == 2:
-            print("Volviendo a la lista de juegos")
-
-        else:
-            print("Saliendo")
-            flag = 1
+    except Exception as e:
+        print("Error inesperado al comprar juegos:", e)
 
 
 def crearNotificacion(activo,destino,tipo):
@@ -329,110 +345,129 @@ def enviarNotificacion(activo,tipo):
         print("usuario no encontrado")
 
 def reembolsarJuego(usuarioActivo):
-    if not usuarios[usuarioActivo]["juegos"]:
-        print("No tenés juegos comprados para reembolsar.")
+    try:
+        if not usuarios[usuarioActivo]["juegos"]:
+            print("No tenés juegos comprados para reembolsar.")
 
-    else:   
+        else:   
 
-        print("Tus juegos comprados:")
-        for i in range(len(usuarios[usuarioActivo]["juegos"])):
-            juego = usuarios[usuarioActivo]["juegos"][i]
-            print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
+            print("Tus juegos comprados:")
+            for i in range(len(usuarios[usuarioActivo]["juegos"])):
+                juego = usuarios[usuarioActivo]["juegos"][i]
+                print(f"{i}) {juego['nombre']} (Comprado el {juego['fechaCompra']})")
 
-        indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
-        while indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
-            print("Selección inválida")
             indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
+            while indice not in range(-1,len(usuarios[usuarioActivo]["juegos"])):
+                print("Selección inválida")
+                indice = int(input("Seleccioná el número del juego que querés reembolsar o -1 para salir: "))
 
-        if indice== -1:
-            print("saliendo...")
-        else:
-            juego = usuarios[usuarioActivo]["juegos"][indice]
-            fecha_actual = time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")
-            fecha_compra = time.strptime(juego["fechaCompra"], "%Y-%m-%d")
-            segundos_actual = time.mktime(fecha_actual)
-            segundos_compra = time.mktime(fecha_compra)
-            diferencia = abs(segundos_actual - segundos_compra)
-
-            if diferencia <= 3 * 24 * 3600:
-                usuarios[usuarioActivo]["saldo"] += juego["precioPagado"]
-                usuarios[usuarioActivo]["juegos"].pop(indice)
-                print(f"Se reembolsó el juego '{juego['nombre']}'. Se acreditaron U$D {juego['precioPagado']} en tu cuenta.")
+            if indice== -1:
+                print("saliendo...")
             else:
-                print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
+                juego = usuarios[usuarioActivo]["juegos"][indice]
+                fecha_actual = time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")
+                fecha_compra = time.strptime(juego["fechaCompra"], "%Y-%m-%d")
+                segundos_actual = time.mktime(fecha_actual)
+                segundos_compra = time.mktime(fecha_compra)
+                diferencia = abs(segundos_actual - segundos_compra)
+
+                if diferencia <= 3 * 24 * 3600:
+                    usuarios[usuarioActivo]["saldo"] += juego["precioPagado"]
+                    usuarios[usuarioActivo]["juegos"].pop(indice)
+                    print(f"Se reembolsó el juego '{juego['nombre']}'. Se acreditaron U$D {juego['precioPagado']} en tu cuenta.")
+                else:
+                    print(f"No se puede reembolsar '{juego['nombre']}' porque ya pasaron más de 3 días desde la compra.")
+    except Exception as e:
+        print("Error inesperado al reembolsar juego:", e)
 
 #funciones para usuario admin
 def buscarUsuario():
-    ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
-    while ingreso !=-1:
+    try:
+        ingreso=int(input("ingrese 1 para continuar, o -1 para salir:) "))
+        while ingreso !=-1:
+            usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
+            coincidencia=False
+            indice=None
+            
+
+            for i in range(len(usuarios)):
+                if usuarioABuscar==usuarios[i]["user"]:
+                    coincidencia= True
+                    indice=i
+
+                    if coincidencia==True:
+                        print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
+                        
+                else:
+                    print("usuario no encontrado")
+    except Exception as e:
+        print("Error inesperado al buscar usuario:", e)
+
+
+def eliminarUsuarios():
+    try:
         usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
         coincidencia=False
         indice=None
-        
 
         for i in range(len(usuarios)):
             if usuarioABuscar==usuarios[i]["user"]:
                 coincidencia= True
                 indice=i
-
-                if coincidencia==True:
-                    print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
-                    
-            else:
-                print("usuario no encontrado")
-
-def eliminarUsuarios():
-    usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
-    coincidencia=False
-    indice=None
-
-    for i in range(len(usuarios)):
-        if usuarioABuscar==usuarios[i]["user"]:
-            coincidencia= True
-            indice=i
-        
-    if coincidencia==True:
-        print("desea eliminar el usuario?")
-        confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
-        if confirmacion==1:
-            usuarios.pop(indice)
-    else:
-        print("usuario no encontrado")
+            
+        if coincidencia==True:
+            print("desea eliminar el usuario?")
+            confirmacion=int(input("ingrese 1 para confirmar, 2 para volver atras: "))
+            if confirmacion==1:
+                usuarios.pop(indice)
+        else:
+            print("usuario no encontrado")
+    except Exception as e:
+        print("Error inesperado al eliminar usuario:", e)
 
 def agregarJuegosAbiblioteca():
-    juego=input("ingrese el nombre del juego que desea agregar a la biblioteca: ")
-    if juego not in videojuegos:
-        videojuegos.append(juego)
-        {
-            "id": len(videojuegos),
-            "nombre": juego,
-            "comania": input("ingrese la compañia del juego: "),
-            "precio": float(input("ingrese el precio del juego: ")),
-            "trofeos_totales": int(input("ingrese la cantidad de trofeos totales del juego: ")),
-            "descripcion": input("ingrese la descripcion del juego: "),
-            "duracion_horas": int(input("ingrese la duracion en horas del juego: "))
-            
-        }
-    else:
-        print("ese juego ya se encuentra en la biblioteca")
+    try:
+        juego=input("ingrese el nombre del juego que desea agregar a la biblioteca: ")
+        if juego not in videojuegos:
+            videojuegos.append(juego)
+            {
+                "id": len(videojuegos),
+                "nombre": juego,
+                "comania": input("ingrese la compañia del juego: "),
+                "precio": float(input("ingrese el precio del juego: ")),
+                "trofeos_totales": int(input("ingrese la cantidad de trofeos totales del juego: ")),
+                "descripcion": input("ingrese la descripcion del juego: "),
+                "duracion_horas": int(input("ingrese la duracion en horas del juego: "))
+                
+            }
+        else:
+            print("ese juego ya se encuentra en la biblioteca")
+    except Exception as e:
+        print("Error inesperado al agregar juego a biblioteca:", e)
 
 def agregarJuegoAUsuario(usuarios):#agregar el append a la lista de diccionarios 
-    juego=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
-    if juego in videojuegos and juego not in usuarios["juegos"]:
-        usuarios.append(juego["juegos"])
-        
-    else:
-        print("ese juego no puede ser regalado a ese usuario :(")
+    try:
+        juego=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
+        if juego in videojuegos and juego not in usuarios["juegos"]:
+            usuarios.append(juego["juegos"])
+            
+        else:
+            print("ese juego no puede ser regalado a ese usuario :(")
+    except Exception as e:
+        print("Error inesperado al agregar juego a usuario:", e)
 
 
 def cambiarPassword(usuarioActivo):
-    nueva = input("Nueva contraseña (mínimo 8): ")
-    repetir = input("Repetir contraseña: ")
+    try:
+        nueva = input("Nueva contraseña (mínimo 8): ")
+        repetir = input("Repetir contraseña: ")
 
-    if len(nueva) < 8 or nueva != repetir:
-        nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
-    else:
-        usuarios[usuarioActivo]["password"] = nueva
+        if len(nueva) < 8 or nueva != repetir:
+            nueva = input("Inválida o no coincide. Nueva contraseña (mínimo 8): ")
+        else:
+            usuarios[usuarioActivo]["password"] = nueva
+    except Exception as e:
+        print("Error al cambiar contraseña:", e)
 
 def cambiarNombreUsuario(usuarioActivo):
     try:
