@@ -394,6 +394,7 @@ def buscarUsuario():
                 if usuarioABuscar==usuarios[i]["user"]:
                     coincidencia= True
                     indice=i
+                    usuario=usuarios[i]["user"]
 
                     if coincidencia==True:
                         print(usuarios[indice])#consultar como hacer para poder usar el indice para printear la info 
@@ -402,6 +403,8 @@ def buscarUsuario():
                     print("usuario no encontrado")
     except Exception as e:
         print("Error inesperado al buscar usuario:", e)
+    
+    return usuario
 
 
 def eliminarUsuarios():
@@ -428,9 +431,12 @@ def eliminarUsuarios():
 def agregarJuegosAbiblioteca():
     try:
         juego=input("ingrese el nombre del juego que desea agregar a la biblioteca: ")
-        if juego not in videojuegos:
-            videojuegos.append(juego)
-            {
+        for i in range(len(videojuegos)):
+            if juego == videojuegos[i]["nombre"]:
+                coincidenciaJuego= True
+                indice=i
+        if coincidenciaJuego==False:
+            juegoAAgegar={
                 "id": len(videojuegos),
                 "nombre": juego,
                 "comania": input("ingrese la compañia del juego: "),
@@ -440,22 +446,39 @@ def agregarJuegosAbiblioteca():
                 "duracion_horas": int(input("ingrese la duracion en horas del juego: "))
                 
             }
+            videojuegos.append(juegoAAgegar)
+            
         else:
             print("ese juego ya se encuentra en la biblioteca")
     except Exception as e:
         print("Error inesperado al agregar juego a biblioteca:", e)
 
-def agregarJuegoAUsuario(usuarios):#agregar el append a la lista de diccionarios 
+def agregarJuegoAUsuario():
     try:
-        juego=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
-        if juego in videojuegos and juego not in usuarios["juegos"]:
-            usuarios.append(juego["juegos"])
-            
+        usuarioABuscar=input("ingrese el nombre del usuario a buscar:")
+        coincidenciaUsuario=False
+        indice=None
+
+        for i in range(len(usuarios)):
+            if usuarioABuscar==usuarios[i]["user"]:
+                coincidenciaUsuario= True
+                indice=i
+                usuario=usuarios[i]["user"]
+
+        juegoABuscar=input("ingrese el nombre del juego que desea agregarle a este usuario: ")
+        for i in range(len(videojuegos)):
+            if juegoABuscar == videojuegos[i]["nombre"]:
+                coincidenciaJuego= True
+                indice=i
+
+        if coincidenciaJuego==True and juegoABuscar not in usuario["juegos"]:
+            usuarios.append(juegoABuscar["juegos"])
+
         else:
             print("ese juego no puede ser regalado a ese usuario :(")
+
     except Exception as e:
         print("Error inesperado al agregar juego a usuario:", e)
-
 
 def cambiarPassword(usuarioActivo):
     try:
